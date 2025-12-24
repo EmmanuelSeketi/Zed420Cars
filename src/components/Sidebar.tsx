@@ -1,6 +1,6 @@
 export default function Sidebar() {
   return (
-    <aside className="bg-white rounded-lg border border-gray-200 p-6 sticky top-24 h-fit">
+    <aside className="bg-white rounded-lg border border-gray-200 p-6 sticky top-24 h-fit shadow-sm">
       <h3 className="text-lg font-semibold mb-4">Filters</h3>
 
       <div className="mb-6">
