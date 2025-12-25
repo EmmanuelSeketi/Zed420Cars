@@ -116,8 +116,55 @@ function ProductGrid({
         <div className="mb-6 bg-white rounded-xl p-4 shadow-sm border border-gray-100">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div>
-              <h2 className="text-lg font-bold text-gray-900">Available Vehicles</h2>
-             
+              <h2 className="text-lg font-bold text-gray-900">Available Vehicles <span className="text-blue-600">({filteredCars.length})</span></h2>
+              {/* Active filter chips */}
+              <div className="flex flex-wrap gap-2 mt-2">
+                {selectedCity !== 'All' && (
+                  <span className="inline-flex items-center gap-1 bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-1 rounded-full">
+                    {selectedCity}
+                  </span>
+                )}
+                {selectedMake !== 'All' && (
+                  <span className="inline-flex items-center gap-1 bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-1 rounded-full">
+                    {selectedMake}
+                  </span>
+                )}
+                {selectedModel !== 'All' && (
+                  <span className="inline-flex items-center gap-1 bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-1 rounded-full">
+                    {selectedModel}
+                  </span>
+                )}
+                {selectedBodyType !== 'All' && (
+                  <span className="inline-flex items-center gap-1 bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-1 rounded-full">
+                    {selectedBodyType}
+                  </span>
+                )}
+                {selectedTransmission !== 'All' && (
+                  <span className="inline-flex items-center gap-1 bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-1 rounded-full">
+                    {selectedTransmission}
+                  </span>
+                )}
+                {selectedYear !== 'All' && (
+                  <span className="inline-flex items-center gap-1 bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-1 rounded-full">
+                    {selectedYear}
+                  </span>
+                )}
+                {selectedMileage !== 'All' && (
+                  <span className="inline-flex items-center gap-1 bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-1 rounded-full">
+                    {selectedMileage}
+                  </span>
+                )}
+                {selectedPrice !== 'All' && (
+                  <span className="inline-flex items-center gap-1 bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-1 rounded-full">
+                    {selectedPrice}
+                  </span>
+                )}
+                {selectedFuelType !== 'All' && (
+                  <span className="inline-flex items-center gap-1 bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-1 rounded-full">
+                    {selectedFuelType}
+                  </span>
+                )}
+              </div>
             </div>
             
             <div className="flex items-center gap-3 w-full sm:w-auto">
@@ -173,7 +220,7 @@ function ProductGrid({
         ) : viewMode === 'grid' ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
             {filteredCars.map(car => (
-              <div key={car.id} className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 hover:scale-[1.02] flex flex-col w-full border border-gray-100 relative group">
+              <div key={car.id} className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col w-full border border-gray-100 hover:border-blue-200 relative group">
                 {/* Wishlist button */}
                 <button
                   onClick={() => toggleWishlist(car.id)}
@@ -192,7 +239,22 @@ function ProductGrid({
                 )}
                 
                 {/* Image Container (Lazy + skeleton) */}
-                <LazyImage src={car.image || '/images/placeholder.png'} alt={car.name} aspectClass="aspect-[5/4]" objectFit="cover" wrapperClass="w-full max-w-full bg-gray-200" />
+                <div className="relative">
+                  <LazyImage src={car.image || '/images/placeholder.png'} alt={car.name} aspectClass="aspect-[16/10]" objectFit="cover" wrapperClass="w-full max-w-full bg-gray-200" />
+                  {/* Year & Mileage badges */}
+                  <div className="absolute bottom-2 left-2 flex gap-1.5">
+                    {(car as any).year && (
+                      <span className="bg-black/70 text-white text-xs font-medium px-2 py-1 rounded">
+                        {(car as any).year}
+                      </span>
+                    )}
+                    {car.mileage && (
+                      <span className="bg-black/70 text-white text-xs font-medium px-2 py-1 rounded">
+                        {car.mileage} mi
+                      </span>
+                    )}
+                  </div>
+                </div>
 
                 <div className="p-4 flex flex-col gap-3 flex-1">
                   <h3 className="text-base font-bold text-gray-900 leading-tight">{car.name}</h3>
@@ -206,8 +268,13 @@ function ProductGrid({
                     </div>
                   </div>
 
-                  <div className="text-2xl font-bold text-blue-600 leading-tight">
+                  <div className="text-2xl font-extrabold text-blue-600 leading-tight">
                     ${Math.round(car.price * (1 - car.discount / 100)).toLocaleString()}
+                    {car.discount > 0 && (
+                      <span className="text-sm font-normal text-gray-400 line-through ml-2">
+                        ${car.price.toLocaleString()}
+                      </span>
+                    )}
                   </div>
 
                   <div className="flex items-center gap-2 text-sm text-gray-700 border-t border-gray-200 pt-3 mt-auto">
@@ -221,7 +288,7 @@ function ProductGrid({
         ) : (
           <div className="space-y-4">
             {filteredCars.map(car => (
-              <div key={car.id} className="bg-white rounded-xl shadow-md hover:shadow-2xl overflow-hidden transition-all duration-300 flex flex-col sm:flex-row items-stretch w-full border border-gray-100 relative group">
+              <div key={car.id} className="bg-white rounded-xl shadow-md hover:shadow-2xl overflow-hidden transition-all duration-300 flex flex-col sm:flex-row items-stretch w-full border border-gray-100 hover:border-blue-200 relative group">
                 {/* Wishlist button */}
                 <button
                   onClick={() => toggleWishlist(car.id)}
@@ -232,12 +299,34 @@ function ProductGrid({
                   />
                 </button>
                 
+                {/* Badge */}
+                {car.badge && (
+                  <div className="absolute top-3 left-3 z-10 bg-blue-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-md">
+                    {car.badge}
+                  </div>
+                )}
+                
                 {/* Image */}
-                <img
-                  src={car.image || '/images/placeholder.png'}
-                  alt={car.name}
-                  className="block w-full h-80 sm:w-72 sm:h-full flex-shrink-0 bg-gray-200 object-cover object-center max-w-full"
-                />
+                <div className="relative w-full sm:w-72 flex-shrink-0">
+                  <img
+                    src={car.image || '/images/placeholder.png'}
+                    alt={car.name}
+                    className="block w-full h-56 sm:h-full bg-gray-200 object-cover object-center"
+                  />
+                  {/* Year & Mileage badges */}
+                  <div className="absolute bottom-2 left-2 flex gap-1.5">
+                    {(car as any).year && (
+                      <span className="bg-black/70 text-white text-xs font-medium px-2 py-1 rounded">
+                        {(car as any).year}
+                      </span>
+                    )}
+                    {car.mileage && (
+                      <span className="bg-black/70 text-white text-xs font-medium px-2 py-1 rounded">
+                        {car.mileage} mi
+                      </span>
+                    )}
+                  </div>
+                </div>
 
                 {/* Content */}
                 <div className="flex-1 px-4 py-5 sm:p-6 flex flex-col justify-between">
@@ -253,8 +342,13 @@ function ProductGrid({
                       </div>
                     </div>
 
-                    <div className="text-2xl font-bold text-blue-600 mb-4">
+                    <div className="text-2xl font-extrabold text-blue-600 mb-4">
                       ${Math.round(car.price * (1 - car.discount / 100)).toLocaleString()}
+                      {car.discount > 0 && (
+                        <span className="text-sm font-normal text-gray-400 line-through ml-2">
+                          ${car.price.toLocaleString()}
+                        </span>
+                      )}
                     </div>
 
                     <div className="flex items-center gap-2 text-sm text-gray-700 border-t border-gray-200 pt-4">

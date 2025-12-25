@@ -58,7 +58,7 @@ export default function Hero({
       {/* Filter Bar - at the bottom of hero */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 pb-6">
         <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 md:p-6 max-w-4xl mx-auto">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
               {/* City */}
               <div className="relative">
                 <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
@@ -138,6 +138,17 @@ export default function Hero({
                     <option key={model} value={model} className="text-gray-900">{model}</option>
                   ))}
                 </select>
+              </div>
+              
+              {/* Search Button */}
+              <div className="col-span-2 md:col-span-1">
+                <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2">
+                  <svg className="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.3-4.3"></path>
+                  </svg>
+                  Search
+                </button>
               </div>
             </div>
         </div>
