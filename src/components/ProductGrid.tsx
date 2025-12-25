@@ -110,7 +110,7 @@ function ProductGrid({
   }
 
   return (
-    <div className="flex-1 bg-gradient-to-br from-gray-50 to-gray-100 py-6">
+    <div className="flex-1 bg-[#FFFFFF] py-6">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Results header with sort and view toggle */}
         <div className="mb-6 bg-white rounded-xl p-4 shadow-sm border border-gray-100">
