@@ -2,6 +2,7 @@ import { useState } from 'react'
 import Navbar from './components/Navbar.tsx'
 import Hero from './components/Hero.tsx'
 import ProductGrid from './components/ProductGrid.tsx'
+import Sidebar from './components/Sidebar.tsx'
 import Footer from './components/Footer.tsx'
 import Cart from './components/Cart.tsx'
 import './index.css'
@@ -9,6 +10,15 @@ import './index.css'
 function App() {
   const [showCart, setShowCart] = useState(false)
   const [cartItems, setCartItems] = useState<any[]>([])
+  const [selectedModel, setSelectedModel] = useState('All')
+  const [selectedCity, setSelectedCity] = useState('All')
+  const [selectedMake, setSelectedMake] = useState('All')
+  const [selectedTransmission, setSelectedTransmission] = useState('All')
+  const [selectedBodyType, setSelectedBodyType] = useState('All')
+  const [selectedMileage, setSelectedMileage] = useState('All')
+  const [selectedYear, setSelectedYear] = useState('All')
+  const [selectedPrice, setSelectedPrice] = useState('All')
+  const [selectedFuelType, setSelectedFuelType] = useState('All')
 
   const cars = [
     {
@@ -25,7 +35,10 @@ function App() {
       mileage: '15,000',
       engine: 'Electric',
       location: 'Lusaka City Center',
-      style: 'Sedan'
+      style: 'Sedan',
+      transmission: 'Automatic',
+      year: 2023,
+      fuelType: 'Electric'
     },
     {
       id: 2,
@@ -41,7 +54,10 @@ function App() {
       mileage: '8,500',
       engine: '3.0L I6 Turbo',
       location: 'Kabulonga',
-      style: 'Sedan'
+      style: 'Sedan',
+      transmission: 'Automatic',
+      year: 2023,
+      fuelType: 'Petrol'
     },
     {
       id: 3,
@@ -57,7 +73,10 @@ function App() {
       mileage: '5,200',
       engine: '2.0L I4',
       location: 'Northend',
-      style: 'Sedan'
+      style: 'Sedan',
+      transmission: 'Manual',
+      year: 2024,
+      fuelType: 'Petrol'
     },
     {
       id: 4,
@@ -69,17 +88,20 @@ function App() {
       reviews: 324,
       discount: 8,
       category: 'SUV',
-      badge: null,
+      badge: 'BEST SELLER',
       mileage: '12,000',
       engine: '3.0L I6 Turbo',
       location: 'Ridgeway',
-      style: 'SUV'
+      style: 'SUV',
+      transmission: 'Automatic',
+      year: 2022,
+      fuelType: 'Diesel'
     },
     {
       id: 5,
       make: 'Audi',
       name: 'Audi RS6 Avant',
-      image: '/images/5.png',
+      image: '/images/03.png',
       price: 110000,
       rating: 4.7,
       reviews: 145,
@@ -89,7 +111,10 @@ function App() {
       mileage: '18,000',
       engine: '4.0L V8 Turbo',
       location: 'Avondale',
-      style: 'Wagon'
+      style: 'Wagon',
+      transmission: 'Automatic',
+      year: 2021,
+      fuelType: 'Petrol'
     },
     {
       id: 6,
@@ -105,7 +130,10 @@ function App() {
       mileage: '22,000',
       engine: '1.5L I4',
       location: 'Chelston',
-      style: 'Sedan'
+      style: 'Sedan',
+      transmission: 'CVT',
+      year: 2022,
+      fuelType: 'Petrol'
     },
     {
       id: 7,
@@ -121,7 +149,10 @@ function App() {
       mileage: '10,000',
       engine: '5.0L V8',
       location: 'Woodlands',
-      style: 'Coupe'
+      style: 'Coupe',
+      transmission: 'Manual',
+      year: 2023,
+      fuelType: 'Petrol'
     },
     {
       id: 8,
@@ -133,11 +164,14 @@ function App() {
       reviews: 98,
       discount: 0,
       category: 'Sports',
-      badge: null,
+      badge: 'FEATURED',
       mileage: '3,500',
       engine: '3.8L H6 Turbo',
       location: 'Silverest',
-      style: 'Coupe'
+      style: 'Coupe',
+      transmission: 'Automatic',
+      year: 2024,
+      fuelType: 'Petrol'
     }
   ]
 
@@ -174,10 +208,81 @@ function App() {
         <Cart items={cartItems} onRemove={removeFromCart} onUpdateQuantity={updateQuantity} />
       ) : (
         <>
-          <Hero />
+          <Hero 
+            selectedModel={selectedModel} 
+            onModelChange={setSelectedModel}
+            selectedCity={selectedCity}
+            onCityChange={setSelectedCity}
+            selectedMake={selectedMake}
+            onMakeChange={setSelectedMake}
+            selectedTransmission={selectedTransmission}
+            onTransmissionChange={setSelectedTransmission}
+            makes={Array.from(new Set(cars.map(c => c.make))).sort()}
+            transmissions={Array.from(new Set(cars.map(c => c.transmission))).sort()}
+            models={Array.from(new Set(cars.map(c => c.name))).sort()}
+            cities={Array.from(new Set(cars.map(c => c.location))).sort()}
+          />
 
-          <div className="py-8">
-            <ProductGrid cars={cars} onAddToCart={addToCart} />
+          <div id="listings" className="py-8 px-4 md:px-6 lg:px-8">
+            <div className="max-w-7xl mx-auto">
+              <div className="flex gap-6">
+                {/* Sidebar (hidden on mobile, shown on desktop) */}
+                <div className="hidden lg:block w-64">
+                  <Sidebar 
+                    selectedCity={selectedCity}
+                    onCityChange={setSelectedCity}
+                    selectedMake={selectedMake}
+                    onMakeChange={setSelectedMake}
+                    selectedModel={selectedModel}
+                    onModelChange={setSelectedModel}
+                    selectedBodyType={selectedBodyType}
+                    onBodyTypeChange={setSelectedBodyType}
+                    selectedMileage={selectedMileage}
+                    onMileageChange={setSelectedMileage}
+                    selectedYear={selectedYear}
+                    onYearChange={setSelectedYear}
+                    selectedTransmission={selectedTransmission}
+                    onTransmissionChange={setSelectedTransmission}
+                    selectedPrice={selectedPrice}
+                    onPriceChange={setSelectedPrice}
+                    selectedFuelType={selectedFuelType}
+                    onFuelTypeChange={setSelectedFuelType}
+                    cities={Array.from(new Set(cars.map(c => c.location))).sort()}
+                    makes={Array.from(new Set(cars.map(c => c.make))).sort()}
+                    models={Array.from(new Set(cars.map(c => c.name))).sort()}
+                    bodyTypes={Array.from(new Set(cars.map(c => c.style))).sort()}
+                    years={Array.from(new Set(cars.map(c => String(c.year)))).sort().reverse()}
+                    transmissions={Array.from(new Set(cars.map(c => c.transmission))).sort()}
+                    fuelTypes={Array.from(new Set(cars.map(c => c.fuelType))).sort()}
+                    onReset={() => {
+                      setSelectedCity('All')
+                      setSelectedMake('All')
+                      setSelectedModel('All')
+                      setSelectedBodyType('All')
+                      setSelectedMileage('All')
+                      setSelectedYear('All')
+                      setSelectedTransmission('All')
+                      setSelectedPrice('All')
+                      setSelectedFuelType('All')
+                    }}
+                  />
+                </div>
+                {/* Main content */}
+                <ProductGrid 
+                  cars={cars} 
+                  onAddToCart={addToCart}
+                  selectedModel={selectedModel}
+                  selectedCity={selectedCity}
+                  selectedMake={selectedMake}
+                  selectedTransmission={selectedTransmission}
+                  selectedBodyType={selectedBodyType}
+                  selectedMileage={selectedMileage}
+                  selectedYear={selectedYear}
+                  selectedPrice={selectedPrice}
+                  selectedFuelType={selectedFuelType}
+                />
+              </div>
+            </div>
           </div>
         </>
       )}
