@@ -1,6 +1,7 @@
-import { useState } from 'react'
-import { Grid3x3, List, MapPin, Heart } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { Grid3x3, List, MapPin, Heart, Eye } from 'lucide-react'
 import LazyImage from './LazyImage'
+import SkeletonCard from './SkeletonCard'
 
 interface Car {
   id: number
@@ -17,6 +18,8 @@ interface Car {
   engine?: string
   location?: string
   style?: string
+  views?: number
+  activeViewers?: number
 }
 
 interface ProductGridProps {
@@ -31,6 +34,7 @@ interface ProductGridProps {
   selectedYear?: string
   selectedPrice?: string
   selectedFuelType?: string
+  searchQuery?: string
 }
 
 function ProductGrid({ 
@@ -43,11 +47,22 @@ function ProductGrid({
   selectedMileage = 'All',
   selectedYear = 'All',
   selectedPrice = 'All',
-  selectedFuelType = 'All'
+  selectedFuelType = 'All',
+  searchQuery = ''
 }: ProductGridProps) {
   const [sortBy, setSortBy] = useState('featured')
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
   const [wishlist, setWishlist] = useState<Set<number>>(new Set())
+  const [sortDropdownOpen, setSortDropdownOpen] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
+
+  // Simulate initial loading
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false)
+    }, 1500)
+    return () => clearTimeout(timer)
+  }, [])
 
   // Helper function to parse mileage string to number
   const parseMileage = (mileage: string) => {
@@ -87,7 +102,13 @@ function ProductGrid({
     const matchesPrice = matchesPriceRange(car.price, selectedPrice)
     const matchesFuelType = selectedFuelType === 'All' || (car as any).fuelType === selectedFuelType
     
-    return matchesCity && matchesMake && matchesTransmission && matchesModel && matchesBodyType && matchesMileage && matchesYear && matchesPrice && matchesFuelType
+    // Search query filter - matches name or make
+    const matchesSearch = searchQuery === '' || 
+      car.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      car.make.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (car.location && car.location.toLowerCase().includes(searchQuery.toLowerCase()))
+    
+    return matchesCity && matchesMake && matchesTransmission && matchesModel && matchesBodyType && matchesMileage && matchesYear && matchesPrice && matchesFuelType && matchesSearch
   })
 
   // Sort logic
@@ -113,10 +134,16 @@ function ProductGrid({
     <div className="flex-1 bg-[#FFFFFF]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Results header with sort and view toggle */}
-        <div className="mb-6 bg-white rounded-xl p-4 shadow-sm border border-gray-100">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="mb-4">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
             <div>
-              <h2 className="text-lg font-bold text-gray-900">Available Vehicles <span className="text-blue-600">({filteredCars.length})</span></h2>
+              <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+                <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                </svg>
+                Available Vehicles
+                <span className="text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full text-sm">{filteredCars.length}</span>
+              </h2>
               {/* Active filter chips */}
               <div className="flex flex-wrap gap-2 mt-2">
                 {selectedCity !== 'All' && (
@@ -169,34 +196,66 @@ function ProductGrid({
             
             <div className="flex items-center gap-3 w-full sm:w-auto">
               {/* Sort */}
-              <div className="flex-1 sm:flex-none">
-                <select
-                  value={sortBy}
-                  onChange={e => setSortBy(e.target.value)}
-                  className="w-full bg-gray-50 text-gray-900 rounded-lg px-4 py-2.5 text-sm border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent cursor-pointer"
+              <div className="flex-1 sm:flex-none relative">
+                <button
+                  onClick={() => setSortDropdownOpen(!sortDropdownOpen)}
+                  className="w-full bg-white text-gray-700 rounded-lg px-3 py-2 text-sm border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent cursor-pointer flex items-center justify-between gap-2 min-w-[150px] hover:border-gray-300 transition-colors"
                 >
-                  <option value="featured">Sort By: Featured</option>
-                  <option value="price-low">Price: Low to High</option>
-                  <option value="price-high">Price: High to Low</option>
-                  <option value="newest">Newest First</option>
-                </select>
+                  <div className="flex items-center gap-2">
+                    <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12" />
+                    </svg>
+                    <span className="font-medium text-gray-700">
+                      {sortBy === 'featured' && 'Sort By: Featured'}
+                      {sortBy === 'price-low' && 'Sort By: Low to High'}
+                      {sortBy === 'price-high' && 'Sort By: High to Low'}
+                      {sortBy === 'newest' && 'Sort By: Newest'}
+                    </span>
+                  </div>
+                  <svg className={`w-5 h-5 text-gray-400 transition-transform ${sortDropdownOpen ? 'rotate-180' : ''}`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 15.0006L7.75732 10.758L9.17154 9.34375L12 12.1722L14.8284 9.34375L16.2426 10.758L12 15.0006Z"></path>
+                  </svg>
+                </button>
+                {sortDropdownOpen && (
+                  <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-lg shadow-xl border border-gray-100 z-[100] overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
+                    <div className="p-1">
+                      {[
+                        { value: 'featured', label: 'Featured' },
+                        { value: 'price-low', label: 'Price: Low to High' },
+                        { value: 'price-high', label: 'Price: High to Low' },
+                        { value: 'newest', label: 'Newest First' }
+                      ].map(option => (
+                        <button
+                          key={option.value}
+                          onClick={() => { setSortBy(option.value); setSortDropdownOpen(false); }}
+                          className={`w-full text-left px-3 py-2 rounded-md text-sm transition-all duration-150 flex items-center justify-between ${sortBy === option.value ? 'bg-blue-600 text-white' : 'text-gray-700 hover:bg-gray-50'}`}
+                        >
+                          <span className="font-medium">{option.label}</span>
+                          {sortBy === option.value && <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* View toggle */}
-              <div className="flex items-center bg-gray-100 rounded-lg p-1">
+              <div className="flex items-center border border-gray-200 rounded-lg overflow-hidden">
                 <button
                   onClick={() => setViewMode('grid')}
-                  className={`p-2.5 rounded-md transition-all duration-200 ${viewMode === 'grid' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
+                  className={`px-3 py-2 flex items-center gap-1.5 text-sm font-medium transition-all duration-200 ${viewMode === 'grid' ? 'bg-blue-600 text-white' : 'bg-white text-gray-600 hover:bg-gray-50'}`}
                   title="Grid View"
                 >
                   <Grid3x3 className="w-4 h-4" />
+                  <span className="hidden sm:inline">Grid</span>
                 </button>
                 <button
                   onClick={() => setViewMode('list')}
-                  className={`p-2.5 rounded-md transition-all duration-200 ${viewMode === 'list' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
+                  className={`px-3 py-2 flex items-center gap-1.5 text-sm font-medium transition-all duration-200 border-l border-gray-200 ${viewMode === 'list' ? 'bg-blue-600 text-white' : 'bg-white text-gray-600 hover:bg-gray-50'}`}
                   title="List View"
                 >
                   <List className="w-4 h-4" />
+                  <span className="hidden sm:inline">List</span>
                 </button>
               </div>
             </div>
@@ -204,7 +263,13 @@ function ProductGrid({
         </div>
 
         {/* Products Grid or List */}
-        {filteredCars.length === 0 ? (
+        {isLoading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
+            {[...Array(6)].map((_, i) => (
+              <SkeletonCard key={i} />
+            ))}
+          </div>
+        ) : filteredCars.length === 0 ? (
           <div className="text-center py-20">
             <div className="text-6xl mb-4">🚗</div>
             <h3 className="text-2xl font-bold text-gray-900 mb-2">No cars found</h3>
@@ -277,9 +342,24 @@ function ProductGrid({
                     )}
                   </div>
 
-                  <div className="flex items-center gap-2 text-sm text-gray-700 border-t border-gray-200 pt-3 mt-auto">
-                    <MapPin className="w-4 h-4 text-blue-600 flex-shrink-0" />
-                    <span className="font-medium">{car.location || 'N/A'}</span>
+                  <div className="flex items-center justify-between text-sm text-gray-700 border-t border-gray-200 pt-3 mt-auto">
+                    <div className="flex items-center gap-2">
+                      <MapPin className="w-4 h-4 text-blue-600 flex-shrink-0" />
+                      <span className="font-medium">{car.location || 'N/A'}</span>
+                    </div>
+                    {/* View Analytics */}
+                    <div className={`flex items-center gap-1.5 px-2 py-1 rounded-full text-xs font-medium ${
+                      (car.activeViewers || 0) > 0 
+                        ? 'bg-green-100 text-green-700' 
+                        : 'bg-gray-100 text-gray-600'
+                    }`}>
+                      <Eye className="w-3.5 h-3.5" />
+                      {(car.activeViewers || 0) > 0 ? (
+                        <span>{car.activeViewers} viewing</span>
+                      ) : (
+                        <span>{(car.views || 0).toLocaleString()}</span>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -351,9 +431,24 @@ function ProductGrid({
                       )}
                     </div>
 
-                    <div className="flex items-center gap-2 text-sm text-gray-700 border-t border-gray-200 pt-4">
-                      <MapPin className="w-4 h-4 text-blue-600 flex-shrink-0" />
-                      <span className="font-medium">{car.location || 'N/A'}</span>
+                    <div className="flex items-center justify-between text-sm text-gray-700 border-t border-gray-200 pt-4">
+                      <div className="flex items-center gap-2">
+                        <MapPin className="w-4 h-4 text-blue-600 flex-shrink-0" />
+                        <span className="font-medium">{car.location || 'N/A'}</span>
+                      </div>
+                      {/* View Analytics */}
+                      <div className={`flex items-center gap-1.5 px-2 py-1 rounded-full text-xs font-medium ${
+                        (car.activeViewers || 0) > 0 
+                          ? 'bg-green-100 text-green-700' 
+                          : 'bg-gray-100 text-gray-600'
+                      }`}>
+                        <Eye className="w-3.5 h-3.5" />
+                        {(car.activeViewers || 0) > 0 ? (
+                          <span>{car.activeViewers} viewing</span>
+                        ) : (
+                          <span>{(car.views || 0).toLocaleString()}</span>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>

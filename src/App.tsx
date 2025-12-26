@@ -1,10 +1,13 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Navbar from './components/Navbar.tsx'
 import Hero from './components/Hero.tsx'
 import ProductGrid from './components/ProductGrid.tsx'
 import Sidebar from './components/Sidebar.tsx'
 import Footer from './components/Footer.tsx'
 import Cart from './components/Cart.tsx'
+import PageLoader from './components/PageLoader.tsx'
+import Login from './components/Login.tsx'
+import Register from './components/Register.tsx'
 import './index.css'
 
 function App() {
@@ -21,6 +24,18 @@ function App() {
   const [selectedFuelType, setSelectedFuelType] = useState('All')
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
+  const [isAppLoading, setIsAppLoading] = useState(true)
+  const [searchQuery, setSearchQuery] = useState('')
+  const [showLogin, setShowLogin] = useState(false)
+  const [showRegister, setShowRegister] = useState(false)
+
+  // Simulate initial app loading
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsAppLoading(false)
+    }, 2000)
+    return () => clearTimeout(timer)
+  }, [])
 
   const cars = [
     {
@@ -40,7 +55,9 @@ function App() {
       style: 'Sedan',
       transmission: 'Automatic',
       year: 2023,
-      fuelType: 'Electric'
+      fuelType: 'Electric',
+      views: 1247,
+      activeViewers: 3
     },
     {
       id: 2,
@@ -59,7 +76,9 @@ function App() {
       style: 'Sedan',
       transmission: 'Automatic',
       year: 2023,
-      fuelType: 'Petrol'
+      fuelType: 'Petrol',
+      views: 892,
+      activeViewers: 0
     },
     {
       id: 3,
@@ -78,7 +97,9 @@ function App() {
       style: 'Sedan',
       transmission: 'Manual',
       year: 2024,
-      fuelType: 'Petrol'
+      fuelType: 'Petrol',
+      views: 2156,
+      activeViewers: 5
     },
     {
       id: 4,
@@ -97,7 +118,9 @@ function App() {
       style: 'SUV',
       transmission: 'Automatic',
       year: 2022,
-      fuelType: 'Diesel'
+      fuelType: 'Diesel',
+      views: 1834,
+      activeViewers: 2
     },
     {
       id: 5,
@@ -116,7 +139,9 @@ function App() {
       style: 'Wagon',
       transmission: 'Automatic',
       year: 2021,
-      fuelType: 'Petrol'
+      fuelType: 'Petrol',
+      views: 567,
+      activeViewers: 0
     },
     {
       id: 6,
@@ -135,7 +160,9 @@ function App() {
       style: 'Sedan',
       transmission: 'CVT',
       year: 2022,
-      fuelType: 'Petrol'
+      fuelType: 'Petrol',
+      views: 1423,
+      activeViewers: 1
     },
     {
       id: 7,
@@ -154,7 +181,9 @@ function App() {
       style: 'Coupe',
       transmission: 'Manual',
       year: 2023,
-      fuelType: 'Petrol'
+      fuelType: 'Petrol',
+      views: 3201,
+      activeViewers: 7
     },
     {
       id: 8,
@@ -173,7 +202,9 @@ function App() {
       style: 'Coupe',
       transmission: 'Automatic',
       year: 2024,
-      fuelType: 'Petrol'
+      fuelType: 'Petrol',
+      views: 4521,
+      activeViewers: 12
     }
   ]
 
@@ -202,9 +233,17 @@ function App() {
     }
   }
 
+  // Show full page loader while app is loading
+  if (isAppLoading) {
+    return <PageLoader />
+  }
+
   return (
-    <div className="min-h-screen flex flex-col">
-      <Navbar cartCount={cartItems.length} onCartClick={() => setShowCart(!showCart)} />
+    <div className="min-h-screen flex flex-col w-full">
+      <div className="fixed top-0 left-0 right-0 z-50">
+        <Navbar cartCount={cartItems.length} onCartClick={() => setShowCart(!showCart)} searchQuery={searchQuery} onSearchChange={setSearchQuery} onLoginClick={() => setShowLogin(true)} />
+      </div>
+      <div className="h-[72px]"></div> {/* Spacer for fixed navbar */}
       
       {showCart ? (
         <Cart items={cartItems} onRemove={removeFromCart} onUpdateQuantity={updateQuantity} />
@@ -225,28 +264,33 @@ function App() {
             cities={Array.from(new Set(cars.map(c => c.location))).sort()}
           />
 
-          <div id="listings" className="py-4 px-4 md:px-6 lg:px-8">
+          <div id="listings" className="py-4 px-0.5 sm:px-4 lg:px-8">
             <div className="max-w-7xl mx-auto">
               {/* Mobile Filter Button */}
-              <div className="lg:hidden mb-4">
+              <div className="lg:hidden mb-4 px-4">
                 <button
                   onClick={() => setMobileFiltersOpen(true)}
-                  className="w-full flex items-center justify-center gap-2 bg-blue-600 text-white py-3 px-4 rounded-lg font-medium shadow-md hover:bg-blue-700 transition-colors"
+                  className="w-full flex items-center justify-center gap-2 bg-blue-600 text-white py-2 md:py-3 px-4 rounded-lg font-medium shadow-md hover:bg-blue-700 transition-colors text-sm"
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
                   </svg>
-                  Filters
+                  All Filters
                 </button>
               </div>
 
               {/* Mobile Filter Drawer */}
               {mobileFiltersOpen && (
-                <div className="lg:hidden fixed inset-0 z-50 overflow-hidden">
+                <div className="lg:hidden fixed inset-0 z-[100] overflow-hidden">
                   <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setMobileFiltersOpen(false)} />
                   <div className="absolute inset-y-0 right-0 w-full max-w-sm bg-white shadow-xl overflow-y-auto animate-in slide-in-from-right duration-300">
                     <div className="sticky top-0 bg-white border-b border-gray-200 p-4 flex items-center justify-between z-10">
-                      <h2 className="text-lg font-bold text-gray-900">Filters</h2>
+                      <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2">
+                        <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+                        </svg>
+                        All Filters
+                      </h2>
                       <button
                         onClick={() => setMobileFiltersOpen(false)}
                         className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
@@ -296,6 +340,7 @@ function App() {
                         }}
                         isCollapsed={false}
                         onToggleCollapse={() => {}}
+                        isMobileView={true}
                       />
                     </div>
                     <div className="sticky bottom-0 bg-white border-t border-gray-200 p-4">
@@ -367,6 +412,7 @@ function App() {
                   selectedYear={selectedYear}
                   selectedPrice={selectedPrice}
                   selectedFuelType={selectedFuelType}
+                  searchQuery={searchQuery}
                 />
               </div>
             </div>
@@ -375,6 +421,28 @@ function App() {
       )}
       
       <Footer />
+
+      {/* Login Modal */}
+      {showLogin && (
+        <Login 
+          onSwitchToRegister={() => {
+            setShowLogin(false)
+            setShowRegister(true)
+          }}
+          onClose={() => setShowLogin(false)}
+        />
+      )}
+
+      {/* Register Modal */}
+      {showRegister && (
+        <Register 
+          onSwitchToLogin={() => {
+            setShowRegister(false)
+            setShowLogin(true)
+          }}
+          onClose={() => setShowRegister(false)}
+        />
+      )}
     </div>
   )
 }

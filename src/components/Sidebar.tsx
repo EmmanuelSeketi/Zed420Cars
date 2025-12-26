@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { MapPin, ChevronLeft, ChevronRight } from 'lucide-react'
+import { MapPin, ChevronLeft, ChevronRight, SlidersHorizontal } from 'lucide-react'
 
 interface SidebarProps {
   selectedCity: string
@@ -30,6 +30,7 @@ interface SidebarProps {
   onReset: () => void
   isCollapsed?: boolean
   onToggleCollapse?: () => void
+  isMobileView?: boolean
 }
 
 export default function Sidebar({ 
@@ -60,11 +61,12 @@ export default function Sidebar({
   fuelTypes,
   onReset,
   isCollapsed = false,
-  onToggleCollapse
+  onToggleCollapse,
+  isMobileView = false
 }: SidebarProps) {
   const [expandedSections, setExpandedSections] = useState({
-    city: true,
-    make: true,
+    city: false,
+    make: false,
     model: false,
     bodyType: false,
     mileage: false,
@@ -100,18 +102,18 @@ export default function Sidebar({
   // Collapsed state - show only icons
   if (isCollapsed) {
     return (
-      <aside className="bg-white rounded-lg border border-blue-200 p-2 sticky top-24 h-fit shadow-sm w-14 transition-all duration-300">
+      <aside className="bg-white rounded-xl border-2 border-gray-200 p-3 sticky top-24 h-fit shadow-md w-16 transition-all duration-300">
         {/* Expand button */}
         <button
           onClick={onToggleCollapse}
-          className="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-gray-100 transition-colors mb-2"
+          className="w-10 h-10 flex items-center justify-center rounded-lg border-2 border-gray-200 bg-gray-50 hover:bg-blue-50 hover:border-blue-300 transition-all mb-3 shadow-sm"
           title="Expand filters"
         >
           <ChevronRight size={20} className="text-gray-600" />
         </button>
         
         {/* Icon buttons */}
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-2">
           {filterIcons.map((filter) => (
             <button
               key={filter.key}
@@ -119,14 +121,16 @@ export default function Sidebar({
                 if (onToggleCollapse) onToggleCollapse()
                 toggleSection(filter.key as keyof typeof expandedSections)
               }}
-              className={`w-10 h-10 flex items-center justify-center rounded-lg transition-colors relative ${
-                filter.hasSelection ? 'bg-blue-100' : 'hover:bg-gray-100'
+              className={`w-10 h-10 flex items-center justify-center rounded-lg border-2 transition-all relative shadow-sm ${
+                filter.hasSelection 
+                  ? 'bg-blue-50 border-blue-400 hover:bg-blue-100' 
+                  : 'bg-gray-50 border-gray-200 hover:bg-blue-50 hover:border-blue-300'
               }`}
               title={filter.label}
             >
               {filter.icon}
               {filter.hasSelection && (
-                <span className="absolute top-1 right-1 w-2 h-2 bg-blue-600 rounded-full"></span>
+                <span className="absolute -top-1 -right-1 w-3 h-3 bg-blue-600 rounded-full border-2 border-white"></span>
               )}
             </button>
           ))}
@@ -136,9 +140,12 @@ export default function Sidebar({
   }
 
   return (
-    <aside className="bg-white rounded-lg border border-blue-200 p-5 sticky top-24 h-fit shadow-sm w-64 transition-all duration-300">
+    <aside className={`bg-white rounded-lg border border-blue-200 p-5 sticky top-24 h-fit shadow-sm transition-all duration-300 ${isMobileView ? 'w-full border-0 shadow-none' : 'w-64'}`}>
       <div className="flex items-center justify-between mb-6">
-        <h3 className="text-lg font-semibold">Filters</h3>
+        <h3 className="text-lg font-semibold flex items-center gap-2">
+          <SlidersHorizontal size={18} className="text-blue-600" />
+          {isMobileView ? 'All Filters' : 'Filters'}
+        </h3>
         <div className="flex items-center gap-2">
           <button
             onClick={onReset}
@@ -146,7 +153,7 @@ export default function Sidebar({
           >
             Reset
           </button>
-          {onToggleCollapse && (
+          {onToggleCollapse && !isMobileView && (
             <button
               onClick={onToggleCollapse}
               className="p-1 rounded hover:bg-gray-100 transition-colors"
@@ -381,7 +388,7 @@ export default function Sidebar({
         {expandedSections.transmission && (
           <div className="space-y-1 bg-gray-50/50 rounded-lg p-2 border border-gray-100 animate-in slide-in-from-top-2 duration-200">
             <button onClick={() => onTransmissionChange('All')} className={`w-full text-left px-3 py-2 rounded-md transition-all duration-150 flex items-center justify-between text-xs ${selectedTransmission === 'All' ? 'bg-blue-600 text-white shadow-sm' : 'text-gray-700 hover:bg-white hover:shadow-sm'}`}>
-              <span className="font-medium">All Transmissions</span>
+              <span className="font-medium">Transmission</span>
               {selectedTransmission === 'All' && <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>}
             </button>
             {transmissions.map(trans => (

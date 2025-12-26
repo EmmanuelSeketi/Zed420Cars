@@ -1,13 +1,17 @@
-import { ShoppingCart, User, Menu, X } from 'lucide-react'
+import { ShoppingCart, User, Menu, X, Search } from 'lucide-react'
 import { useState } from 'react'
 
 interface NavbarProps {
   cartCount: number
   onCartClick: () => void
+  searchQuery: string
+  onSearchChange: (query: string) => void
+  onLoginClick: () => void
 }
 
-export default function Navbar({ cartCount, onCartClick }: NavbarProps) {
+export default function Navbar({ cartCount, onCartClick, searchQuery, onSearchChange, onLoginClick }: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [mobileSearchOpen, setMobileSearchOpen] = useState(false)
 
   return (
     <nav className="bg-white/80 backdrop-blur-md shadow-lg border-b border-gray-100/50 sticky top-0 z-50">
@@ -15,18 +19,37 @@ export default function Navbar({ cartCount, onCartClick }: NavbarProps) {
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center text-white font-bold text-lg shadow-md hover:shadow-lg transition-shadow">
-              B
+              L
             </div>
-            <h1 className="text-2xl font-black text-gray-900 tracking-tight">Brand</h1>
+            <h1 className="text-2xl font-black text-gray-900 tracking-tight">Logo</h1>
           </div>
 
-          <div className="hidden md:flex gap-8">
+          <div className="hidden md:flex items-center gap-6">
+            {/* Search Field - Before navlinks */}
+            <div className="relative">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => onSearchChange(e.target.value)}
+                placeholder="Search vehicles..."
+                className="pl-11 pr-4 py-2.5 w-56 lg:w-72 bg-gray-50 border-2 border-gray-200 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white focus:border-blue-500 transition-all duration-200 placeholder-gray-400 shadow-sm"
+              />
+            </div>
+            
             <a href="#" className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200">Home</a>
             <a href="#" className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200">About</a>
             <a href="#" className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200">Contact</a>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
+            {/* Mobile Search Button */}
+            <button 
+              onClick={() => setMobileSearchOpen(!mobileSearchOpen)}
+              className="md:hidden p-2.5 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200"
+            >
+              <Search className="w-5 h-5" />
+            </button>
             <button
               onClick={onCartClick}
               className="relative p-2.5 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200"
@@ -38,7 +61,10 @@ export default function Navbar({ cartCount, onCartClick }: NavbarProps) {
                 </span>
               )}
             </button>
-            <button className="p-2.5 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200">
+            <button 
+              onClick={onLoginClick}
+              className="p-2.5 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200"
+            >
               <User className="w-5 h-5" />
             </button>
             <button
@@ -47,8 +73,33 @@ export default function Navbar({ cartCount, onCartClick }: NavbarProps) {
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
-          </div> 
+          </div>
         </div>
+
+        {/* Mobile Search Bar */}
+        {mobileSearchOpen && (
+          <div className="md:hidden mt-4 pt-4 border-t border-gray-200 animate-in fade-in slide-in-from-top-2">
+            <div className="relative flex items-center gap-2">
+              <div className="relative flex-1">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => onSearchChange(e.target.value)}
+                  placeholder="Search vehicles..."
+                  className="w-full pl-11 pr-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white focus:border-blue-500 transition-all duration-200 placeholder-gray-400"
+                  autoFocus
+                />
+              </div>
+              <button
+                onClick={() => setMobileSearchOpen(false)}
+                className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-full transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* Mobile menu */}
         {mobileMenuOpen && (
