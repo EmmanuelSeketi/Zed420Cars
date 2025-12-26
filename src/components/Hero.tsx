@@ -33,7 +33,7 @@ export default function Hero({
     <div 
       className="relative text-white overflow-hidden"
       style={{
-        backgroundImage: 'linear-gradient(to right, rgba(37, 99, 235, 0.55), rgba(29, 78, 216, 0.75)), url(/images/hero-car.jpg)',
+        backgroundImage: 'linear-gradient(to right, rgba(37, 99, 235, 0.35), rgba(29, 78, 216, 0.50)), url(/images/hero-car.jpg)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
       }}
@@ -68,7 +68,7 @@ export default function Hero({
                 <select
                   value={selectedCity}
                   onChange={(e) => onCityChange(e.target.value)}
-                  className={`w-full pl-10 pr-10 py-3 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-300 shadow-md appearance-none bg-white ${selectedCity === 'All' ? 'text-gray-400' : 'text-gray-900'}`}
+                  className={`w-full pl-10 pr-10 py-3 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-300 shadow-md appearance-none bg-white border border-gray-200 ${selectedCity === 'All' ? 'text-gray-400' : 'text-gray-900'}`}
                 >
                   <option value="All" className="text-gray-400">City</option>
                   {cities.map(city => (
@@ -88,7 +88,7 @@ export default function Hero({
                 <select
                   value={selectedMake}
                   onChange={(e) => onMakeChange(e.target.value)}
-                  className={`w-full pl-10 pr-10 py-3 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-300 shadow-md appearance-none bg-white ${selectedMake === 'All' ? 'text-gray-400' : 'text-gray-900'}`}
+                  className={`w-full pl-10 pr-10 py-3 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-300 shadow-md appearance-none bg-white border border-gray-200 ${selectedMake === 'All' ? 'text-gray-400' : 'text-gray-900'}`}
                 >
                   <option value="All" className="text-gray-400">Make</option>
                   {makes.map(make => (
@@ -111,7 +111,7 @@ export default function Hero({
                 <select
                   value={selectedTransmission}
                   onChange={(e) => onTransmissionChange(e.target.value)}
-                  className={`w-full pl-10 pr-10 py-3 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-300 shadow-md appearance-none bg-white ${selectedTransmission === 'All' ? 'text-gray-400' : 'text-gray-900'}`}
+                  className={`w-full pl-10 pr-10 py-3 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-300 shadow-md appearance-none bg-white border border-gray-200 ${selectedTransmission === 'All' ? 'text-gray-400' : 'text-gray-900'}`}
                 >
                   <option value="All" className="text-gray-400">Transmission</option>
                   {transmissions.map(transmission => (
@@ -131,7 +131,7 @@ export default function Hero({
                 <select
                   value={selectedModel}
                   onChange={(e) => onModelChange(e.target.value)}
-                  className={`w-full pl-10 pr-10 py-3 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-300 shadow-md appearance-none bg-white ${selectedModel === 'All' ? 'text-gray-400' : 'text-gray-900'}`}
+                  className={`w-full pl-10 pr-10 py-3 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-300 shadow-md appearance-none bg-white border border-gray-200 ${selectedModel === 'All' ? 'text-gray-400' : 'text-gray-900'}`}
                 >
                   <option value="All" className="text-gray-400">Model</option>
                   {models.map(model => (

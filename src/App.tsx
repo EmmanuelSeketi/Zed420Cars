@@ -19,6 +19,8 @@ function App() {
   const [selectedYear, setSelectedYear] = useState('All')
   const [selectedPrice, setSelectedPrice] = useState('All')
   const [selectedFuelType, setSelectedFuelType] = useState('All')
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
+  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
 
   const cars = [
     {
@@ -223,11 +225,94 @@ function App() {
             cities={Array.from(new Set(cars.map(c => c.location))).sort()}
           />
 
-          <div id="listings" className="py-8 px-4 md:px-6 lg:px-8">
+          <div id="listings" className="py-4 px-4 md:px-6 lg:px-8">
             <div className="max-w-7xl mx-auto">
+              {/* Mobile Filter Button */}
+              <div className="lg:hidden mb-4">
+                <button
+                  onClick={() => setMobileFiltersOpen(true)}
+                  className="w-full flex items-center justify-center gap-2 bg-blue-600 text-white py-3 px-4 rounded-lg font-medium shadow-md hover:bg-blue-700 transition-colors"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                  </svg>
+                  Filters
+                </button>
+              </div>
+
+              {/* Mobile Filter Drawer */}
+              {mobileFiltersOpen && (
+                <div className="lg:hidden fixed inset-0 z-50 overflow-hidden">
+                  <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setMobileFiltersOpen(false)} />
+                  <div className="absolute inset-y-0 right-0 w-full max-w-sm bg-white shadow-xl overflow-y-auto animate-in slide-in-from-right duration-300">
+                    <div className="sticky top-0 bg-white border-b border-gray-200 p-4 flex items-center justify-between z-10">
+                      <h2 className="text-lg font-bold text-gray-900">Filters</h2>
+                      <button
+                        onClick={() => setMobileFiltersOpen(false)}
+                        className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+                      >
+                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                      </button>
+                    </div>
+                    <div className="p-4">
+                      <Sidebar 
+                        selectedCity={selectedCity}
+                        onCityChange={setSelectedCity}
+                        selectedMake={selectedMake}
+                        onMakeChange={setSelectedMake}
+                        selectedModel={selectedModel}
+                        onModelChange={setSelectedModel}
+                        selectedBodyType={selectedBodyType}
+                        onBodyTypeChange={setSelectedBodyType}
+                        selectedMileage={selectedMileage}
+                        onMileageChange={setSelectedMileage}
+                        selectedYear={selectedYear}
+                        onYearChange={setSelectedYear}
+                        selectedTransmission={selectedTransmission}
+                        onTransmissionChange={setSelectedTransmission}
+                        selectedPrice={selectedPrice}
+                        onPriceChange={setSelectedPrice}
+                        selectedFuelType={selectedFuelType}
+                        onFuelTypeChange={setSelectedFuelType}
+                        cities={Array.from(new Set(cars.map(c => c.location))).sort()}
+                        makes={Array.from(new Set(cars.map(c => c.make))).sort()}
+                        models={Array.from(new Set(cars.map(c => c.name))).sort()}
+                        bodyTypes={Array.from(new Set(cars.map(c => c.style))).sort()}
+                        years={Array.from(new Set(cars.map(c => String(c.year)))).sort().reverse()}
+                        transmissions={Array.from(new Set(cars.map(c => c.transmission))).sort()}
+                        fuelTypes={Array.from(new Set(cars.map(c => c.fuelType))).sort()}
+                        onReset={() => {
+                          setSelectedCity('All')
+                          setSelectedMake('All')
+                          setSelectedModel('All')
+                          setSelectedBodyType('All')
+                          setSelectedMileage('All')
+                          setSelectedYear('All')
+                          setSelectedTransmission('All')
+                          setSelectedPrice('All')
+                          setSelectedFuelType('All')
+                        }}
+                        isCollapsed={false}
+                        onToggleCollapse={() => {}}
+                      />
+                    </div>
+                    <div className="sticky bottom-0 bg-white border-t border-gray-200 p-4">
+                      <button
+                        onClick={() => setMobileFiltersOpen(false)}
+                        className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-medium shadow-md hover:bg-blue-700 transition-colors"
+                      >
+                        Apply Filters
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               <div className="flex gap-6">
                 {/* Sidebar (hidden on mobile, shown on desktop) */}
-                <div className="hidden lg:block w-64">
+                <div className={`hidden lg:block ${sidebarCollapsed ? 'w-14' : 'w-64'} transition-all duration-300`}>
                   <Sidebar 
                     selectedCity={selectedCity}
                     onCityChange={setSelectedCity}
@@ -265,6 +350,8 @@ function App() {
                       setSelectedPrice('All')
                       setSelectedFuelType('All')
                     }}
+                    isCollapsed={sidebarCollapsed}
+                    onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)}
                   />
                 </div>
                 {/* Main content */}

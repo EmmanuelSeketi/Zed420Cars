@@ -10,14 +10,14 @@ export default function Navbar({ cartCount, onCartClick }: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   return (
-    <nav className="bg-white shadow-lg border-b border-gray-100 sticky top-0 z-50">
+    <nav className="bg-white/80 backdrop-blur-md shadow-lg border-b border-gray-100/50 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center text-white font-bold text-lg shadow-md hover:shadow-lg transition-shadow">
-              C
+              B
             </div>
-            <h1 className="text-2xl font-black text-gray-900 tracking-tight">CarHub</h1>
+            <h1 className="text-2xl font-black text-gray-900 tracking-tight">Brand</h1>
           </div>
 
           <div className="hidden md:flex gap-8">
@@ -47,7 +47,7 @@ export default function Navbar({ cartCount, onCartClick }: NavbarProps) {
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
-          </div>
+          </div> 
         </div>
 
         {/* Mobile menu */}

@@ -110,7 +110,7 @@ function ProductGrid({
   }
 
   return (
-    <div className="flex-1 bg-[#FFFFFF] py-6">
+    <div className="flex-1 bg-[#FFFFFF]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Results header with sort and view toggle */}
         <div className="mb-6 bg-white rounded-xl p-4 shadow-sm border border-gray-100">
@@ -175,7 +175,7 @@ function ProductGrid({
                   onChange={e => setSortBy(e.target.value)}
                   className="w-full bg-gray-50 text-gray-900 rounded-lg px-4 py-2.5 text-sm border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent cursor-pointer"
                 >
-                  <option value="featured">Sort: Featured</option>
+                  <option value="featured">Sort By: Featured</option>
                   <option value="price-low">Price: Low to High</option>
                   <option value="price-high">Price: High to Low</option>
                   <option value="newest">Newest First</option>
@@ -220,7 +220,7 @@ function ProductGrid({
         ) : viewMode === 'grid' ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
             {filteredCars.map(car => (
-              <div key={car.id} className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col w-full border border-gray-100 hover:border-blue-200 relative group">
+              <div key={car.id} className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col w-full border border-gray-100 hover:border-blue-300 relative group">
                 {/* Wishlist button */}
                 <button
                   onClick={() => toggleWishlist(car.id)}
@@ -288,7 +288,7 @@ function ProductGrid({
         ) : (
           <div className="space-y-4">
             {filteredCars.map(car => (
-              <div key={car.id} className="bg-white rounded-xl shadow-md hover:shadow-2xl overflow-hidden transition-all duration-300 flex flex-col sm:flex-row items-stretch w-full border border-gray-100 hover:border-blue-200 relative group">
+              <div key={car.id} className="bg-white rounded-xl shadow-md hover:shadow-2xl overflow-hidden transition-all duration-300 flex flex-col sm:flex-row items-stretch w-full border border-gray-100 hover:border-blue-300 relative group">
                 {/* Wishlist button */}
                 <button
                   onClick={() => toggleWishlist(car.id)}
