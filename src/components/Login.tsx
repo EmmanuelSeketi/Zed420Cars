@@ -41,8 +41,12 @@ export default function Login({ onSwitchToRegister, onClose }: LoginProps) {
         {/* Content */}
         <div className="flex-1 flex flex-col justify-center px-8 py-6">
           {/* Logo */}
-          <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center mx-auto mb-6 shadow-lg">
-            <span className="text-white font-bold text-lg">L</span>
+          <div className="flex items-center justify-center mx-auto mb-6">
+            <img 
+              src="/images/Logo.png" 
+              alt="Logo" 
+              className="h-14 w-auto object-contain"
+            />
           </div>
 
           {/* Google Sign In */}

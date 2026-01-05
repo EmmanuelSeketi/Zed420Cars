@@ -7,11 +7,12 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
           {/* About */}
           <div>
-            <div className="flex items-center gap-2.5 mb-4">
-              <div className="w-9 h-9 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">
-                L
-              </div>
-              <h3 className="text-white font-bold">Logo</h3>
+            <div className="flex items-center mb-4">
+              <img 
+                src="/images/Logo.png" 
+                alt="Logo" 
+                className="h-10 w-auto object-contain"
+              />
             </div>
             <p className="text-sm leading-relaxed">Your trusted destination for quality vehicles in Zambia.</p>
           </div>

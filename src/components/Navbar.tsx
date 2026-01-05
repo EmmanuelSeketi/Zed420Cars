@@ -17,12 +17,13 @@ export default function Navbar({ cartCount, onCartClick, searchQuery, onSearchCh
     <nav className="bg-white/80 backdrop-blur-md shadow-lg border-b border-gray-100/50 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <div className="flex justify-between items-center">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center text-white font-bold text-lg shadow-md hover:shadow-lg transition-shadow">
-              L
-            </div>
-            <h1 className="text-2xl font-black text-gray-900 tracking-tight">Logo</h1>
-          </div>
+          <a href="/" className="flex items-center">
+            <img 
+              src="/images/Logo.png" 
+              alt="Logo" 
+              className="h-14 w-auto object-contain"
+            />
+          </a>
 
           <div className="hidden md:flex items-center gap-6">
             {/* Search Field - Before navlinks */}

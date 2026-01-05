@@ -22,6 +22,7 @@ function App() {
   const [selectedYear, setSelectedYear] = useState('All')
   const [selectedPrice, setSelectedPrice] = useState('All')
   const [selectedFuelType, setSelectedFuelType] = useState('All')
+  const [selectedDealType, setSelectedDealType] = useState('All')
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
   const [isAppLoading, setIsAppLoading] = useState(true)
@@ -57,7 +58,8 @@ function App() {
       year: 2023,
       fuelType: 'Electric',
       views: 1247,
-      activeViewers: 3
+      activeViewers: 3,
+      dealType: 'Cash'
     },
     {
       id: 2,
@@ -78,7 +80,8 @@ function App() {
       year: 2023,
       fuelType: 'Petrol',
       views: 892,
-      activeViewers: 0
+      activeViewers: 0,
+      dealType: 'Swap'
     },
     {
       id: 3,
@@ -99,7 +102,8 @@ function App() {
       year: 2024,
       fuelType: 'Petrol',
       views: 2156,
-      activeViewers: 5
+      activeViewers: 5,
+      dealType: 'Cash'
     },
     {
       id: 4,
@@ -120,7 +124,8 @@ function App() {
       year: 2022,
       fuelType: 'Diesel',
       views: 1834,
-      activeViewers: 2
+      activeViewers: 2,
+      dealType: 'Topup'
     },
     {
       id: 5,
@@ -141,7 +146,8 @@ function App() {
       year: 2021,
       fuelType: 'Petrol',
       views: 567,
-      activeViewers: 0
+      activeViewers: 0,
+      dealType: 'Swap'
     },
     {
       id: 6,
@@ -162,7 +168,8 @@ function App() {
       year: 2022,
       fuelType: 'Petrol',
       views: 1423,
-      activeViewers: 1
+      activeViewers: 1,
+      dealType: 'Cash'
     },
     {
       id: 7,
@@ -183,7 +190,8 @@ function App() {
       year: 2023,
       fuelType: 'Petrol',
       views: 3201,
-      activeViewers: 7
+      activeViewers: 7,
+      dealType: 'Topup'
     },
     {
       id: 8,
@@ -204,7 +212,8 @@ function App() {
       year: 2024,
       fuelType: 'Petrol',
       views: 4521,
-      activeViewers: 12
+      activeViewers: 12,
+      dealType: 'Cash'
     }
   ]
 
@@ -249,20 +258,7 @@ function App() {
         <Cart items={cartItems} onRemove={removeFromCart} onUpdateQuantity={updateQuantity} />
       ) : (
         <>
-          <Hero 
-            selectedModel={selectedModel} 
-            onModelChange={setSelectedModel}
-            selectedCity={selectedCity}
-            onCityChange={setSelectedCity}
-            selectedMake={selectedMake}
-            onMakeChange={setSelectedMake}
-            selectedTransmission={selectedTransmission}
-            onTransmissionChange={setSelectedTransmission}
-            makes={Array.from(new Set(cars.map(c => c.make))).sort()}
-            transmissions={Array.from(new Set(cars.map(c => c.transmission))).sort()}
-            models={Array.from(new Set(cars.map(c => c.name))).sort()}
-            cities={Array.from(new Set(cars.map(c => c.location))).sort()}
-          />
+          <Hero />
 
           <div id="listings" className="py-4 px-0.5 sm:px-4 lg:px-8">
             <div className="max-w-7xl mx-auto">
@@ -270,12 +266,17 @@ function App() {
               <div className="lg:hidden mb-4 px-4">
                 <button
                   onClick={() => setMobileFiltersOpen(true)}
-                  className="w-full flex items-center justify-center gap-2 bg-blue-600 text-white py-2 md:py-3 px-4 rounded-lg font-medium shadow-md hover:bg-blue-700 transition-colors text-sm"
+                  className="w-full flex items-center justify-center gap-3 bg-gradient-to-r from-blue-600 to-blue-500 text-white py-3.5 px-6 rounded-xl font-semibold shadow-lg hover:shadow-xl hover:from-blue-700 hover:to-blue-600 transition-all duration-300 active:scale-[0.98]"
                 >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+                  <div className="p-1.5 bg-white/20 rounded-lg">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                    </svg>
+                  </div>
+                  <span>All Filters</span>
+                  <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>
-                  All Filters
                 </button>
               </div>
 
@@ -320,6 +321,8 @@ function App() {
                         onPriceChange={setSelectedPrice}
                         selectedFuelType={selectedFuelType}
                         onFuelTypeChange={setSelectedFuelType}
+                        selectedDealType={selectedDealType}
+                        onDealTypeChange={setSelectedDealType}
                         cities={Array.from(new Set(cars.map(c => c.location))).sort()}
                         makes={Array.from(new Set(cars.map(c => c.make))).sort()}
                         models={Array.from(new Set(cars.map(c => c.name))).sort()}
@@ -327,6 +330,7 @@ function App() {
                         years={Array.from(new Set(cars.map(c => String(c.year)))).sort().reverse()}
                         transmissions={Array.from(new Set(cars.map(c => c.transmission))).sort()}
                         fuelTypes={Array.from(new Set(cars.map(c => c.fuelType))).sort()}
+                        dealTypes={Array.from(new Set(cars.map(c => c.dealType))).sort()}
                         onReset={() => {
                           setSelectedCity('All')
                           setSelectedMake('All')
@@ -337,6 +341,7 @@ function App() {
                           setSelectedTransmission('All')
                           setSelectedPrice('All')
                           setSelectedFuelType('All')
+                          setSelectedDealType('All')
                         }}
                         isCollapsed={false}
                         onToggleCollapse={() => {}}
@@ -377,6 +382,8 @@ function App() {
                     onPriceChange={setSelectedPrice}
                     selectedFuelType={selectedFuelType}
                     onFuelTypeChange={setSelectedFuelType}
+                    selectedDealType={selectedDealType}
+                    onDealTypeChange={setSelectedDealType}
                     cities={Array.from(new Set(cars.map(c => c.location))).sort()}
                     makes={Array.from(new Set(cars.map(c => c.make))).sort()}
                     models={Array.from(new Set(cars.map(c => c.name))).sort()}
@@ -384,6 +391,7 @@ function App() {
                     years={Array.from(new Set(cars.map(c => String(c.year)))).sort().reverse()}
                     transmissions={Array.from(new Set(cars.map(c => c.transmission))).sort()}
                     fuelTypes={Array.from(new Set(cars.map(c => c.fuelType))).sort()}
+                    dealTypes={Array.from(new Set(cars.map(c => c.dealType))).sort()}
                     onReset={() => {
                       setSelectedCity('All')
                       setSelectedMake('All')
@@ -394,6 +402,7 @@ function App() {
                       setSelectedTransmission('All')
                       setSelectedPrice('All')
                       setSelectedFuelType('All')
+                      setSelectedDealType('All')
                     }}
                     isCollapsed={sidebarCollapsed}
                     onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)}
@@ -412,6 +421,7 @@ function App() {
                   selectedYear={selectedYear}
                   selectedPrice={selectedPrice}
                   selectedFuelType={selectedFuelType}
+                  selectedDealType={selectedDealType}
                   searchQuery={searchQuery}
                 />
               </div>

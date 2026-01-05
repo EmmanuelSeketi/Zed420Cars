@@ -20,6 +20,7 @@ interface Car {
   style?: string
   views?: number
   activeViewers?: number
+  dealType?: string
 }
 
 interface ProductGridProps {
@@ -34,6 +35,7 @@ interface ProductGridProps {
   selectedYear?: string
   selectedPrice?: string
   selectedFuelType?: string
+  selectedDealType?: string
   searchQuery?: string
 }
 
@@ -48,6 +50,7 @@ function ProductGrid({
   selectedYear = 'All',
   selectedPrice = 'All',
   selectedFuelType = 'All',
+  selectedDealType = 'All',
   searchQuery = ''
 }: ProductGridProps) {
   const [sortBy, setSortBy] = useState('featured')
@@ -101,6 +104,7 @@ function ProductGrid({
     const matchesYear = selectedYear === 'All' || String((car as any).year) === selectedYear
     const matchesPrice = matchesPriceRange(car.price, selectedPrice)
     const matchesFuelType = selectedFuelType === 'All' || (car as any).fuelType === selectedFuelType
+    const matchesDealType = selectedDealType === 'All' || (car as any).dealType === selectedDealType
     
     // Search query filter - matches name or make
     const matchesSearch = searchQuery === '' || 
@@ -108,7 +112,7 @@ function ProductGrid({
       car.make.toLowerCase().includes(searchQuery.toLowerCase()) ||
       (car.location && car.location.toLowerCase().includes(searchQuery.toLowerCase()))
     
-    return matchesCity && matchesMake && matchesTransmission && matchesModel && matchesBodyType && matchesMileage && matchesYear && matchesPrice && matchesFuelType && matchesSearch
+    return matchesCity && matchesMake && matchesTransmission && matchesModel && matchesBodyType && matchesMileage && matchesYear && matchesPrice && matchesFuelType && matchesDealType && matchesSearch
   })
 
   // Sort logic
@@ -189,6 +193,11 @@ function ProductGrid({
                 {selectedFuelType !== 'All' && (
                   <span className="inline-flex items-center gap-1 bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-1 rounded-full">
                     {selectedFuelType}
+                  </span>
+                )}
+                {selectedDealType !== 'All' && (
+                  <span className="inline-flex items-center gap-1 bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-1 rounded-full">
+                    {selectedDealType}
                   </span>
                 )}
               </div>
@@ -303,6 +312,18 @@ function ProductGrid({
                   </div>
                 )}
                 
+                {/* Deal Type badge */}
+                {car.dealType && (
+                  <div className={`absolute top-3 ${car.badge ? 'left-24' : 'left-3'} z-10 text-xs font-bold px-3 py-1.5 rounded-full shadow-md ${
+                    car.dealType === 'Cash' ? 'bg-green-500 text-white' :
+                    car.dealType === 'Swap' ? 'bg-orange-500 text-white' :
+                    car.dealType === 'Topup' ? 'bg-purple-500 text-white' :
+                    'bg-gray-500 text-white'
+                  }`}>
+                    {car.dealType}
+                  </div>
+                )}
+                
                 {/* Image Container (Lazy + skeleton) */}
                 <div className="relative">
                   <LazyImage src={car.image || '/images/placeholder.png'} alt={car.name} aspectClass="aspect-[16/10]" objectFit="cover" wrapperClass="w-full max-w-full bg-gray-200" />
@@ -383,6 +404,18 @@ function ProductGrid({
                 {car.badge && (
                   <div className="absolute top-3 left-3 z-10 bg-blue-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-md">
                     {car.badge}
+                  </div>
+                )}
+                
+                {/* Deal Type badge */}
+                {car.dealType && (
+                  <div className={`absolute top-3 ${car.badge ? 'left-24' : 'left-3'} z-10 text-xs font-bold px-3 py-1.5 rounded-full shadow-md ${
+                    car.dealType === 'Cash' ? 'bg-green-500 text-white' :
+                    car.dealType === 'Swap' ? 'bg-orange-500 text-white' :
+                    car.dealType === 'Topup' ? 'bg-purple-500 text-white' :
+                    'bg-gray-500 text-white'
+                  }`}>
+                    {car.dealType}
                   </div>
                 )}
                 
