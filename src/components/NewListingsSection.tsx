@@ -41,7 +41,7 @@ export default function NewListingsSection({ cars, onCarClick, wishlist, onToggl
         <div>
           <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
             
-            New Listings
+            Latest Listing
             <span className="text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full text-sm">{newListings.length}</span>
           </h2>
          
@@ -58,7 +58,7 @@ export default function NewListingsSection({ cars, onCarClick, wishlist, onToggl
             <div 
               key={car.id} 
               onClick={() => onCarClick(car)}
-              className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col w-full border border-gray-100 hover:border-blue-300 relative group cursor-pointer"
+              className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col w-full border border-gray-100 hover:border-blue-300 relative group cursor-pointer mb-4 sm:mb-0"
             >
               <button
                 onClick={(e) => { e.stopPropagation(); onToggleWishlist(car.id); }}
@@ -70,7 +70,7 @@ export default function NewListingsSection({ cars, onCarClick, wishlist, onToggl
               </button>
               
               <div className="absolute top-3 left-3 z-10 bg-green-500 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-md">
-                New
+                Latest
               </div>
               
               {car.dealType && (
@@ -85,7 +85,7 @@ export default function NewListingsSection({ cars, onCarClick, wishlist, onToggl
               )}
               
               <div className="relative">
-                <LazyImage src={car.image || '/images/placeholder.png'} alt={car.name} aspectClass="aspect-[16/10]" objectFit="cover" wrapperClass="w-full max-w-full bg-gray-200" />
+                <LazyImage src={car.image || '/images/placeholder.png'} alt={car.name} aspectClass="aspect-[4/3]" objectFit="cover" wrapperClass="w-full max-w-full bg-gray-200" />
                 <div className="absolute bottom-2 left-2 flex gap-1.5">
                   {car.year && (
                     <span className="bg-black/70 text-white text-xs font-medium px-2 py-1 rounded flex items-center gap-1">
@@ -107,11 +107,6 @@ export default function NewListingsSection({ cars, onCarClick, wishlist, onToggl
 
                 <div className="text-2xl font-extrabold text-blue-600 leading-tight">
                   ${Math.round(car.price * (1 - car.discount / 100)).toLocaleString()}
-                  {car.discount > 0 && (
-                    <span className="text-sm font-normal text-gray-400 line-through ml-2">
-                      ${car.price.toLocaleString()}
-                    </span>
-                  )}
                 </div>
 
                 <div className="flex items-center justify-between text-sm text-gray-700 mt-auto">
@@ -154,7 +149,7 @@ export default function NewListingsSection({ cars, onCarClick, wishlist, onToggl
               </button>
               
               <div className="absolute top-3 left-3 z-10 bg-green-500 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-md">
-                New
+                Latest
               </div>
               
               {car.dealType && (
@@ -169,7 +164,7 @@ export default function NewListingsSection({ cars, onCarClick, wishlist, onToggl
               )}
               
               <div className="relative w-full sm:w-72 flex-shrink-0">
-                <LazyImage src={car.image || '/images/placeholder.png'} alt={car.name} aspectClass="aspect-[16/10]" objectFit="cover" wrapperClass="w-full h-full bg-gray-200" />
+                <LazyImage src={car.image || '/images/placeholder.png'} alt={car.name} aspectClass="aspect-[4/3]" objectFit="cover" wrapperClass="w-full h-full bg-gray-200" />
                 <div className="absolute bottom-2 left-2 flex gap-1.5">
                   {car.year && (
                     <span className="bg-black/70 text-white text-xs font-medium px-2 py-1 rounded flex items-center gap-1">
@@ -192,11 +187,6 @@ export default function NewListingsSection({ cars, onCarClick, wishlist, onToggl
 
                   <div className="text-2xl font-extrabold text-blue-600 mb-4">
                     ${Math.round(car.price * (1 - car.discount / 100)).toLocaleString()}
-                    {car.discount > 0 && (
-                      <span className="text-sm font-normal text-gray-400 line-through ml-2">
-                        ${car.price.toLocaleString()}
-                      </span>
-                    )}
                   </div>
 
                   <div className="flex items-center justify-between text-sm text-gray-700">

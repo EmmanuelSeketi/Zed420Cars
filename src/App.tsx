@@ -295,7 +295,7 @@ function App() {
 
                   {/* Popular Makes Section - Separate Container */}
                   <div className="bg-white border-b border-gray-200">
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
                       <PopularMakesSection 
                         onMakeClick={(make) => {
                           // Handle make click - could filter by make or navigate to make-specific page
@@ -311,7 +311,7 @@ function App() {
                       <div className="lg:hidden mb-4 px-4">
                         <button
                           onClick={() => setMobileFiltersOpen(true)}
-                          className="w-full flex items-center justify-center gap-3 bg-gradient-to-r from-blue-600 to-blue-500 text-white py-3.5 px-6 rounded-xl font-semibold shadow-lg hover:shadow-xl hover:from-blue-700 hover:to-blue-600 transition-all duration-300 active:scale-[0.98]"
+                          className="w-full flex items-center justify-center gap-3 bg-gradient-to-r from-blue-600 to-blue-500 text-white py-1.5 px-6 rounded-xl font-semibold shadow-lg hover:shadow-xl hover:from-blue-700 hover:to-blue-600 transition-all duration-300 active:scale-[0.98]"
                         >
                           <div className="p-1.5 bg-white/20 rounded-lg">
                             <SlidersHorizontal className="w-5 h-5 text-white" />

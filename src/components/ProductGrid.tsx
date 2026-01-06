@@ -60,7 +60,7 @@ function ProductGrid({
   selectedDealType = 'All',
   searchQuery = ''
 }: ProductGridProps) {
-  const [sortBy, setSortBy] = useState('featured')
+  const [sortBy, setSortBy] = useState('all')
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
   const [internalWishlist, setInternalWishlist] = useState<Set<number>>(new Set())
   const [sortDropdownOpen, setSortDropdownOpen] = useState(false)
@@ -141,69 +141,7 @@ function ProductGrid({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Results header with sort and view toggle */}
         <div className="mb-2">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-            <div>
-              <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
-                <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                </svg>
-                All Listings
-                <span className="text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full text-sm">{filteredCars.length}</span>
-              </h2>
-              {/* Active filter chips */}
-              <div className="flex flex-wrap gap-2 mt-2">
-                {selectedCity !== 'All' && (
-                  <span className="inline-flex items-center gap-1 bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-1 rounded-full">
-                    {selectedCity}
-                  </span>
-                )}
-                {selectedMake !== 'All' && (
-                  <span className="inline-flex items-center gap-1 bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-1 rounded-full">
-                    {selectedMake}
-                  </span>
-                )}
-                {selectedModel !== 'All' && (
-                  <span className="inline-flex items-center gap-1 bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-1 rounded-full">
-                    {selectedModel}
-                  </span>
-                )}
-                {selectedBodyType !== 'All' && (
-                  <span className="inline-flex items-center gap-1 bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-1 rounded-full">
-                    {selectedBodyType}
-                  </span>
-                )}
-                {selectedTransmission !== 'All' && (
-                  <span className="inline-flex items-center gap-1 bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-1 rounded-full">
-                    {selectedTransmission}
-                  </span>
-                )}
-                {selectedYear !== 'All' && (
-                  <span className="inline-flex items-center gap-1 bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-1 rounded-full">
-                    {selectedYear}
-                  </span>
-                )}
-                {selectedMileage !== 'All' && (
-                  <span className="inline-flex items-center gap-1 bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-1 rounded-full">
-                    {selectedMileage}
-                  </span>
-                )}
-                {selectedPrice !== 'All' && (
-                  <span className="inline-flex items-center gap-1 bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-1 rounded-full">
-                    {selectedPrice}
-                  </span>
-                )}
-                {selectedFuelType !== 'All' && (
-                  <span className="inline-flex items-center gap-1 bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-1 rounded-full">
-                    {selectedFuelType}
-                  </span>
-                )}
-                {selectedDealType !== 'All' && (
-                  <span className="inline-flex items-center gap-1 bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-1 rounded-full">
-                    {selectedDealType}
-                  </span>
-                )}
-              </div>
-            </div>
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-end gap-3">
             
             <div className="flex items-center gap-3 w-full sm:w-auto">
               {/* Sort */}
@@ -217,10 +155,13 @@ function ProductGrid({
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12" />
                     </svg>
                     <span className="font-medium text-gray-700">
-                      {sortBy === 'featured' && 'Sort By: Featured'}
-                      {sortBy === 'price-low' && 'Sort By: Low to High'}
-                      {sortBy === 'price-high' && 'Sort By: High to Low'}
-                      {sortBy === 'newest' && 'Sort By: Newest'}
+                      Sort By: {sortBy === 'all' && 'All'}
+                      {sortBy === 'featured' && 'Featured'}
+                      {sortBy === 'latest' && 'Latest'}
+                      {sortBy === 'unregistered' && 'Unregistered'}
+                      {sortBy === 'price-low' && 'Low to High'}
+                      {sortBy === 'price-high' && 'High to Low'}
+                      {sortBy === 'newest' && 'Newest First'}
                     </span>
                   </div>
                   <svg className={`w-4 h-4 text-gray-500 transition-transform ${sortDropdownOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -232,7 +173,10 @@ function ProductGrid({
                   <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
                     <div className="p-1">
                       {[
+                        { value: 'all', label: 'All' },
                         { value: 'featured', label: 'Featured' },
+                        { value: 'latest', label: 'Latest' },
+                        { value: 'unregistered', label: 'Unregistered' },
                         { value: 'price-low', label: 'Price: Low to High' },
                         { value: 'price-high', label: 'Price: High to Low' },
                         { value: 'newest', label: 'Newest First' }
@@ -258,7 +202,7 @@ function ProductGrid({
               </div>
 
               {/* View Mode Toggle */}
-              <div className="flex bg-gray-100 rounded-lg p-1">
+              <div className="hidden sm:flex bg-white rounded-lg p-1 border border-gray-200">
                 <button
                   onClick={() => setViewMode('grid')}
                   className={`p-2 rounded-md transition-colors ${
@@ -299,12 +243,12 @@ function ProductGrid({
             </a>
           </div>
         ) : viewMode === 'grid' ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 lg:gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-3 lg:gap-4">
             {filteredCars.map(car => (
               <div 
                 key={car.id} 
                 onClick={() => onCarClick?.(car)}
-                className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col w-full border border-gray-100 hover:border-blue-300 relative group cursor-pointer">
+                className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col w-full border border-gray-100 hover:border-blue-300 relative group cursor-pointer mb-4 sm:mb-0">
                 {/* Wishlist button */}
                 <button
                   onClick={(e) => { e.stopPropagation(); toggleWishlist(car.id); }}
@@ -336,7 +280,7 @@ function ProductGrid({
                 
                 {/* Image Container (Lazy + skeleton) */}
                 <div className="relative">
-                  <LazyImage src={car.image || '/images/placeholder.png'} alt={car.name} aspectClass="aspect-[16/10]" objectFit="cover" wrapperClass="w-full max-w-full bg-gray-300" />
+                  <LazyImage src={car.image || '/images/placeholder.png'} alt={car.name} aspectClass="aspect-[4/3]" objectFit="cover" wrapperClass="w-full max-w-full bg-gray-300" />
                   {/* Year & Mileage badges */}
                   <div className="absolute bottom-2 left-2 flex gap-1.5">
                     {(car as any).year && (
@@ -354,7 +298,7 @@ function ProductGrid({
                   </div>
                 </div>
 
-                <div className="p-3 sm:p-4 flex flex-col gap-3 flex-1">
+                <div className="p-3 sm:p-4 flex flex-col gap-2 flex-1">
                   <h3 className="text-base font-bold text-gray-900 leading-tight">{car.name}</h3>
 
                   {/* Rating */}
@@ -368,11 +312,6 @@ function ProductGrid({
 
                   <div className="text-2xl font-extrabold text-blue-600 leading-tight">
                     ${Math.round(car.price * (1 - car.discount / 100)).toLocaleString()}
-                    {car.discount > 0 && (
-                      <span className="text-sm font-normal text-gray-400 line-through ml-2">
-                        ${car.price.toLocaleString()}
-                      </span>
-                    )}
                   </div>
 
                   <div className="flex items-center justify-between text-sm text-gray-700 mt-auto">
@@ -474,11 +413,6 @@ function ProductGrid({
 
                     <div className="text-2xl font-extrabold text-blue-600 mb-4">
                       ${Math.round(car.price * (1 - car.discount / 100)).toLocaleString()}
-                      {car.discount > 0 && (
-                        <span className="text-sm font-normal text-gray-400 line-through ml-2">
-                          ${car.price.toLocaleString()}
-                        </span>
-                      )}
                     </div>
 
                     <div className="flex items-center justify-between text-sm text-gray-700">

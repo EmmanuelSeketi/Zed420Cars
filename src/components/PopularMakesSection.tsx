@@ -110,9 +110,8 @@ export default function PopularMakesSection({ onMakeClick }: PopularMakesSection
     <div className="mb-8">
       {/* Header */}
       <div className="text-center mb-8">
-        <h2 className="text-3xl font-bold text-gray-900 relative inline-block">
+        <h2 className="text-3xl font-bold text-gray-900">
           Popular Makes
-          <div className="absolute -bottom-1 left-0 right-0 h-1 bg-gradient-to-r from-blue-600 to-blue-400 rounded-full"></div>
         </h2>
       </div>
       
