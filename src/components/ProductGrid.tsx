@@ -3,7 +3,6 @@ import { Grid3x3, List, MapPin, Heart, Eye, Calendar, Gauge } from 'lucide-react
 import LazyImage from './LazyImage'
 import FeaturedSection from './FeaturedSection'
 import NewListingsSection from './NewListingsSection'
-import PopularMakesSection from './PopularMakesSection'
 
 interface Car {
   id: number
@@ -527,16 +526,6 @@ function ProductGrid({
             wishlist={externalWishlist || internalWishlist}
             onToggleWishlist={onToggleWishlist || (() => {})}
             viewMode={viewMode}
-          />
-        </div>
-
-        {/* Popular Makes Section */}
-        <div className="mt-8">
-          <PopularMakesSection 
-            onMakeClick={(make) => {
-              // Handle make click - could filter by make or navigate to make-specific page
-              console.log('Selected make:', make)
-            }}
           />
         </div>
       </div>

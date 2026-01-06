@@ -8,6 +8,7 @@ import Sidebar from './components/Sidebar.tsx'
 import Footer from './components/Footer.tsx'
 import Cart from './components/Cart.tsx'
 import PageLoader from './components/PageLoader.tsx'
+import PopularMakesSection from './components/PopularMakesSection.tsx'
 import Login from './components/Login.tsx'
 import Register from './components/Register.tsx'
 import CarDetails from './components/CarDetails.tsx'
@@ -291,6 +292,18 @@ function App() {
               ) : (
                 <>
                   <Hero />
+
+                  {/* Popular Makes Section - Separate Container */}
+                  <div className="bg-white border-b border-gray-200">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+                      <PopularMakesSection 
+                        onMakeClick={(make) => {
+                          // Handle make click - could filter by make or navigate to make-specific page
+                          console.log('Selected make:', make)
+                        }}
+                      />
+                    </div>
+                  </div>
 
                   <div id="listings" className="py-4 px-0.5 sm:px-4 lg:px-8">
                     <div className="max-w-7xl mx-auto">
