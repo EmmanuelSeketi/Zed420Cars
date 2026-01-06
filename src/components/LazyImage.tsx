@@ -12,9 +12,9 @@ export default function LazyImage({ src, alt = '', aspectClass = 'aspect-video',
   const [loaded, setLoaded] = useState(false)
 
   return (
-    <div className={`${wrapperClass} ${aspectClass} relative overflow-hidden bg-gray-200`}>
+    <div className={`${wrapperClass} ${aspectClass} relative overflow-hidden bg-gray-300`}>
       {!loaded && (
-        <div className="absolute inset-0 bg-gray-300 animate-pulse" />
+        <div className="absolute inset-0 bg-gray-400 animate-pulse" />
       )}
 
       <img

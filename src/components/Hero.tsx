@@ -30,9 +30,7 @@ export default function Hero() {
           <h2 className="text-4xl md:text-5xl font-black mb-4 leading-tight tracking-tight" style={{ fontFamily: "'Poppins', sans-serif" }}>
             Find Your Perfect Ride in Zambia
           </h2>
-          <p className="text-lg md:text-xl text-blue-100 font-light leading-relaxed max-w-2xl mx-auto mb-8">
-            Discover quality vehicles from trusted sellers across Zambia
-          </p>
+          
           
           {/* Browse Button */}
           <button

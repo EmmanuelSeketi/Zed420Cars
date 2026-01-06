@@ -1,7 +1,9 @@
-import { useState, useEffect } from 'react'
-import { Grid3x3, List, MapPin, Heart, Eye } from 'lucide-react'
+import { useState } from 'react'
+import { Grid3x3, List, MapPin, Heart, Eye, Calendar, Gauge } from 'lucide-react'
 import LazyImage from './LazyImage'
-import SkeletonCard from './SkeletonCard'
+import FeaturedSection from './FeaturedSection'
+import NewListingsSection from './NewListingsSection'
+import PopularMakesSection from './PopularMakesSection'
 
 interface Car {
   id: number
@@ -26,6 +28,7 @@ interface Car {
 interface ProductGridProps {
   cars: Car[]
   onAddToCart: (car: Car) => void
+  onCarClick?: (car: Car) => void
   selectedModel?: string
   selectedCity?: string
   selectedMake?: string
@@ -37,10 +40,15 @@ interface ProductGridProps {
   selectedFuelType?: string
   selectedDealType?: string
   searchQuery?: string
+  externalWishlist?: Set<number>
+  onToggleWishlist?: (carId: number) => void
 }
 
 function ProductGrid({ 
   cars, 
+  onCarClick,
+  externalWishlist = new Set(),
+  onToggleWishlist,
   selectedModel = 'All',
   selectedCity = 'All',
   selectedMake = 'All',
@@ -55,17 +63,8 @@ function ProductGrid({
 }: ProductGridProps) {
   const [sortBy, setSortBy] = useState('featured')
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
-  const [wishlist, setWishlist] = useState<Set<number>>(new Set())
+  const [internalWishlist, setInternalWishlist] = useState<Set<number>>(new Set())
   const [sortDropdownOpen, setSortDropdownOpen] = useState(false)
-  const [isLoading, setIsLoading] = useState(true)
-
-  // Simulate initial loading
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false)
-    }, 1500)
-    return () => clearTimeout(timer)
-  }, [])
 
   // Helper function to parse mileage string to number
   const parseMileage = (mileage: string) => {
@@ -125,27 +124,31 @@ function ProductGrid({
   }
 
   const toggleWishlist = (carId: number) => {
-    const newWishlist = new Set(wishlist)
-    if (newWishlist.has(carId)) {
-      newWishlist.delete(carId)
+    if (onToggleWishlist) {
+      onToggleWishlist(carId)
     } else {
-      newWishlist.add(carId)
+      const newWishlist = new Set(internalWishlist)
+      if (newWishlist.has(carId)) {
+        newWishlist.delete(carId)
+      } else {
+        newWishlist.add(carId)
+      }
+      setInternalWishlist(newWishlist)
     }
-    setWishlist(newWishlist)
   }
 
   return (
     <div className="flex-1 bg-[#FFFFFF]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Results header with sort and view toggle */}
-        <div className="mb-4">
+        <div className="mb-2">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
             <div>
               <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
                 <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                 </svg>
-                Available Vehicles
+                All Listings
                 <span className="text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full text-sm">{filteredCars.length}</span>
               </h2>
               {/* Active filter chips */}
@@ -221,12 +224,13 @@ function ProductGrid({
                       {sortBy === 'newest' && 'Sort By: Newest'}
                     </span>
                   </div>
-                  <svg className={`w-5 h-5 text-gray-400 transition-transform ${sortDropdownOpen ? 'rotate-180' : ''}`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 15.0006L7.75732 10.758L9.17154 9.34375L12 12.1722L14.8284 9.34375L16.2426 10.758L12 15.0006Z"></path>
+                  <svg className={`w-4 h-4 text-gray-500 transition-transform ${sortDropdownOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
                 </button>
+                
                 {sortDropdownOpen && (
-                  <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-lg shadow-xl border border-gray-100 z-[100] overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
+                  <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
                     <div className="p-1">
                       {[
                         { value: 'featured', label: 'Featured' },
@@ -236,11 +240,17 @@ function ProductGrid({
                       ].map(option => (
                         <button
                           key={option.value}
-                          onClick={() => { setSortBy(option.value); setSortDropdownOpen(false); }}
-                          className={`w-full text-left px-3 py-2 rounded-md text-sm transition-all duration-150 flex items-center justify-between ${sortBy === option.value ? 'bg-blue-600 text-white' : 'text-gray-700 hover:bg-gray-50'}`}
+                          onClick={() => {
+                            setSortBy(option.value)
+                            setSortDropdownOpen(false)
+                          }}
+                          className={`w-full text-left px-3 py-2 rounded-md text-sm transition-colors ${
+                            sortBy === option.value
+                              ? 'bg-blue-50 text-blue-600 font-medium'
+                              : 'text-gray-700 hover:bg-gray-50'
+                          }`}
                         >
-                          <span className="font-medium">{option.label}</span>
-                          {sortBy === option.value && <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>}
+                          {option.label}
                         </button>
                       ))}
                     </div>
@@ -248,23 +258,27 @@ function ProductGrid({
                 )}
               </div>
 
-              {/* View toggle */}
-              <div className="flex items-center border border-gray-200 rounded-lg overflow-hidden">
+              {/* View Mode Toggle */}
+              <div className="flex bg-gray-100 rounded-lg p-1">
                 <button
                   onClick={() => setViewMode('grid')}
-                  className={`px-3 py-2 flex items-center gap-1.5 text-sm font-medium transition-all duration-200 ${viewMode === 'grid' ? 'bg-blue-600 text-white' : 'bg-white text-gray-600 hover:bg-gray-50'}`}
-                  title="Grid View"
+                  className={`p-2 rounded-md transition-colors ${
+                    viewMode === 'grid'
+                      ? 'bg-white text-blue-600 shadow-sm'
+                      : 'text-gray-600 hover:text-gray-900'
+                  }`}
                 >
                   <Grid3x3 className="w-4 h-4" />
-                  <span className="hidden sm:inline">Grid</span>
                 </button>
                 <button
                   onClick={() => setViewMode('list')}
-                  className={`px-3 py-2 flex items-center gap-1.5 text-sm font-medium transition-all duration-200 border-l border-gray-200 ${viewMode === 'list' ? 'bg-blue-600 text-white' : 'bg-white text-gray-600 hover:bg-gray-50'}`}
-                  title="List View"
+                  className={`p-2 rounded-md transition-colors ${
+                    viewMode === 'list'
+                      ? 'bg-white text-blue-600 shadow-sm'
+                      : 'text-gray-600 hover:text-gray-900'
+                  }`}
                 >
                   <List className="w-4 h-4" />
-                  <span className="hidden sm:inline">List</span>
                 </button>
               </div>
             </div>
@@ -272,13 +286,7 @@ function ProductGrid({
         </div>
 
         {/* Products Grid or List */}
-        {isLoading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
-            {[...Array(6)].map((_, i) => (
-              <SkeletonCard key={i} />
-            ))}
-          </div>
-        ) : filteredCars.length === 0 ? (
+        {filteredCars.length === 0 ? (
           <div className="text-center py-20">
             <div className="text-6xl mb-4">🚗</div>
             <h3 className="text-2xl font-bold text-gray-900 mb-2">No cars found</h3>
@@ -292,16 +300,19 @@ function ProductGrid({
             </a>
           </div>
         ) : viewMode === 'grid' ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 lg:gap-4">
             {filteredCars.map(car => (
-              <div key={car.id} className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col w-full border border-gray-100 hover:border-blue-300 relative group">
+              <div 
+                key={car.id} 
+                onClick={() => onCarClick?.(car)}
+                className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col w-full border border-gray-100 hover:border-blue-300 relative group cursor-pointer">
                 {/* Wishlist button */}
                 <button
-                  onClick={() => toggleWishlist(car.id)}
+                  onClick={(e) => { e.stopPropagation(); toggleWishlist(car.id); }}
                   className="absolute top-3 right-3 z-10 bg-white rounded-full p-2.5 shadow-md hover:shadow-lg transition-all duration-200 group-hover:scale-110"
                 >
                   <Heart
-                    className={`w-5 h-5 transition-colors ${wishlist.has(car.id) ? 'fill-red-500 text-red-500' : 'text-gray-400 hover:text-red-500'}`}
+                    className={`w-5 h-5 transition-colors ${(externalWishlist || internalWishlist).has(car.id) ? 'fill-red-500 text-red-500' : 'text-gray-400 hover:text-red-500'}`}
                   />
                 </button>
                 
@@ -326,23 +337,25 @@ function ProductGrid({
                 
                 {/* Image Container (Lazy + skeleton) */}
                 <div className="relative">
-                  <LazyImage src={car.image || '/images/placeholder.png'} alt={car.name} aspectClass="aspect-[16/10]" objectFit="cover" wrapperClass="w-full max-w-full bg-gray-200" />
+                  <LazyImage src={car.image || '/images/placeholder.png'} alt={car.name} aspectClass="aspect-[16/10]" objectFit="cover" wrapperClass="w-full max-w-full bg-gray-300" />
                   {/* Year & Mileage badges */}
                   <div className="absolute bottom-2 left-2 flex gap-1.5">
                     {(car as any).year && (
-                      <span className="bg-black/70 text-white text-xs font-medium px-2 py-1 rounded">
+                      <span className="bg-black/70 text-white text-xs font-medium px-2 py-1 rounded flex items-center gap-1">
+                        <Calendar className="w-3 h-3" />
                         {(car as any).year}
                       </span>
                     )}
                     {car.mileage && (
-                      <span className="bg-black/70 text-white text-xs font-medium px-2 py-1 rounded">
+                      <span className="bg-black/70 text-white text-xs font-medium px-2 py-1 rounded flex items-center gap-1">
+                        <Gauge className="w-3 h-3" />
                         {car.mileage} mi
                       </span>
                     )}
                   </div>
                 </div>
 
-                <div className="p-4 flex flex-col gap-3 flex-1">
+                <div className="p-3 sm:p-4 flex flex-col gap-3 flex-1">
                   <h3 className="text-base font-bold text-gray-900 leading-tight">{car.name}</h3>
 
                   {/* Rating */}
@@ -363,12 +376,11 @@ function ProductGrid({
                     )}
                   </div>
 
-                  <div className="flex items-center justify-between text-sm text-gray-700 border-t border-gray-200 pt-3 mt-auto">
+                  <div className="flex items-center justify-between text-sm text-gray-700 mt-auto">
                     <div className="flex items-center gap-2">
                       <MapPin className="w-4 h-4 text-blue-600 flex-shrink-0" />
                       <span className="font-medium">{car.location || 'N/A'}</span>
                     </div>
-                    {/* View Analytics */}
                     <div className={`flex items-center gap-1.5 px-2 py-1 rounded-full text-xs font-medium ${
                       (car.activeViewers || 0) > 0 
                         ? 'bg-green-100 text-green-700' 
@@ -387,16 +399,20 @@ function ProductGrid({
             ))}
           </div>
         ) : (
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4">
             {filteredCars.map(car => (
-              <div key={car.id} className="bg-white rounded-xl shadow-md hover:shadow-2xl overflow-hidden transition-all duration-300 flex flex-col sm:flex-row items-stretch w-full border border-gray-100 hover:border-blue-300 relative group">
+              <div 
+                key={car.id} 
+                onClick={() => onCarClick?.(car)}
+                className="bg-white rounded-lg shadow-md hover:shadow-2xl overflow-hidden transition-all duration-300 flex flex-col sm:flex-row items-stretch w-full border border-gray-100 hover:border-blue-300 relative group cursor-pointer"
+              >
                 {/* Wishlist button */}
                 <button
-                  onClick={() => toggleWishlist(car.id)}
+                  onClick={(e) => { e.stopPropagation(); toggleWishlist(car.id); }}
                   className="absolute top-3 right-3 z-10 bg-white rounded-full p-2.5 shadow-md hover:shadow-lg transition-all duration-200 group-hover:scale-110"
                 >
                   <Heart
-                    className={`w-5 h-5 transition-colors ${wishlist.has(car.id) ? 'fill-red-500 text-red-500' : 'text-gray-400 hover:text-red-500'}`}
+                    className={`w-5 h-5 transition-colors ${(externalWishlist || internalWishlist).has(car.id) ? 'fill-red-500 text-red-500' : 'text-gray-400 hover:text-red-500'}`}
                   />
                 </button>
                 
@@ -424,17 +440,19 @@ function ProductGrid({
                   <img
                     src={car.image || '/images/placeholder.png'}
                     alt={car.name}
-                    className="block w-full h-56 sm:h-full bg-gray-200 object-cover object-center"
+                    className="block w-full h-56 sm:h-full bg-gray-300 object-cover object-center"
                   />
                   {/* Year & Mileage badges */}
                   <div className="absolute bottom-2 left-2 flex gap-1.5">
                     {(car as any).year && (
-                      <span className="bg-black/70 text-white text-xs font-medium px-2 py-1 rounded">
+                      <span className="bg-black/70 text-white text-xs font-medium px-2 py-1 rounded flex items-center gap-1">
+                        <Calendar className="w-3 h-3" />
                         {(car as any).year}
                       </span>
                     )}
                     {car.mileage && (
-                      <span className="bg-black/70 text-white text-xs font-medium px-2 py-1 rounded">
+                      <span className="bg-black/70 text-white text-xs font-medium px-2 py-1 rounded flex items-center gap-1">
+                        <Gauge className="w-3 h-3" />
                         {car.mileage} mi
                       </span>
                     )}
@@ -442,7 +460,7 @@ function ProductGrid({
                 </div>
 
                 {/* Content */}
-                <div className="flex-1 px-4 py-5 sm:p-6 flex flex-col justify-between">
+                <div className="flex-1 px-3 py-4 sm:px-4 sm:py-5 sm:p-6 flex flex-col justify-between">
                   <div>
                     <h3 className="text-lg font-bold text-gray-900 mb-3">{car.name}</h3>
 
@@ -464,7 +482,7 @@ function ProductGrid({
                       )}
                     </div>
 
-                    <div className="flex items-center justify-between text-sm text-gray-700 border-t border-gray-200 pt-4">
+                    <div className="flex items-center justify-between text-sm text-gray-700">
                       <div className="flex items-center gap-2">
                         <MapPin className="w-4 h-4 text-blue-600 flex-shrink-0" />
                         <span className="font-medium">{car.location || 'N/A'}</span>
@@ -489,6 +507,38 @@ function ProductGrid({
             ))}
           </div>
         )}
+
+        {/* Featured Section */}
+        <div className="mt-8">
+          <FeaturedSection 
+            cars={cars} 
+            onCarClick={onCarClick || (() => {})}
+            wishlist={externalWishlist || internalWishlist}
+            onToggleWishlist={onToggleWishlist || (() => {})}
+            viewMode={viewMode}
+          />
+        </div>
+
+        {/* New Listings Section */}
+        <div className="mt-8">
+          <NewListingsSection 
+            cars={cars} 
+            onCarClick={onCarClick || (() => {})}
+            wishlist={externalWishlist || internalWishlist}
+            onToggleWishlist={onToggleWishlist || (() => {})}
+            viewMode={viewMode}
+          />
+        </div>
+
+        {/* Popular Makes Section */}
+        <div className="mt-8">
+          <PopularMakesSection 
+            onMakeClick={(make) => {
+              // Handle make click - could filter by make or navigate to make-specific page
+              console.log('Selected make:', make)
+            }}
+          />
+        </div>
       </div>
     </div>
   )

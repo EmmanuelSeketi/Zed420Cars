@@ -1,5 +1,6 @@
 import { ShoppingCart, User, Menu, X, Search } from 'lucide-react'
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 
 interface NavbarProps {
   cartCount: number
@@ -17,13 +18,13 @@ export default function Navbar({ cartCount, onCartClick, searchQuery, onSearchCh
     <nav className="bg-white/80 backdrop-blur-md shadow-lg border-b border-gray-100/50 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <div className="flex justify-between items-center">
-          <a href="/" className="flex items-center">
+          <Link to="/" className="flex items-center">
             <img 
               src="/images/Logo.png" 
               alt="Logo" 
               className="h-14 w-auto object-contain"
             />
-          </a>
+          </Link>
 
           <div className="hidden md:flex items-center gap-6">
             {/* Search Field - Before navlinks */}
@@ -38,9 +39,9 @@ export default function Navbar({ cartCount, onCartClick, searchQuery, onSearchCh
               />
             </div>
             
-            <a href="#" className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200">Home</a>
-            <a href="#" className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200">About</a>
-            <a href="#" className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200">Contact</a>
+            <Link to="/" className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200">Home</Link>
+            <Link to="/about" className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200">About</Link>
+            <Link to="/contact" className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200">Contact</Link>
           </div>
 
           <div className="flex items-center gap-2">
@@ -105,10 +106,9 @@ export default function Navbar({ cartCount, onCartClick, searchQuery, onSearchCh
         {/* Mobile menu */}
         {mobileMenuOpen && (
           <div className="md:hidden mt-4 pt-4 border-t border-gray-200 space-y-2 animate-in fade-in slide-in-from-top-2">
-            <a href="#" className="block px-4 py-2.5 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg font-medium transition-colors">Home</a>
-            <a href="#" className="block px-4 py-2.5 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg font-medium transition-colors">Inventory</a>
-            <a href="#" className="block px-4 py-2.5 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg font-medium transition-colors">About</a>
-            <a href="#" className="block px-4 py-2.5 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg font-medium transition-colors">Contact</a>
+            <Link to="/" className="block px-4 py-2.5 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg font-medium transition-colors">Home</Link>
+            <Link to="/about" className="block px-4 py-2.5 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg font-medium transition-colors">About</Link>
+            <Link to="/contact" className="block px-4 py-2.5 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg font-medium transition-colors">Contact</Link>
           </div>
         )}
       </div>
