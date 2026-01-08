@@ -60,7 +60,7 @@ export default function Register({ onSwitchToLogin, onClose }: RegisterProps) {
             {/* Logo */}
             <div className="flex items-center justify-center mx-auto mb-5">
               <img 
-                src="/images/zed420-logo.jpg" 
+                src="/images/Logo.png" 
                 alt="Logo" 
                 className="h-14 w-auto object-contain"
               />

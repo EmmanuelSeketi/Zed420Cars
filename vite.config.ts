@@ -7,5 +7,6 @@ export default defineConfig({
   server: {
     host: true
   },
-  base: "/Zed420Cars"
+  base: "/Zed420Cars",
+ 
 })

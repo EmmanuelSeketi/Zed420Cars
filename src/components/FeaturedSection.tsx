@@ -73,17 +73,6 @@ export default function FeaturedSection({ cars, onCarClick, wishlist, onToggleWi
                 Featured
               </div>
               
-              {car.dealType && (
-                <div className={`absolute top-3 left-24 z-10 text-xs font-bold px-3 py-1.5 rounded-full shadow-md ${
-                  car.dealType === 'Cash' ? 'bg-green-500 text-white' :
-                  car.dealType === 'Swap' ? 'bg-orange-500 text-white' :
-                  car.dealType === 'Topup' ? 'bg-purple-500 text-white' :
-                  'bg-gray-500 text-white'
-                }`}>
-                  {car.dealType}
-                </div>
-              )}
-              
               <div className="relative">
                 <LazyImage src={car.image || '/images/placeholder.png'} alt={car.name} aspectClass="aspect-[4/3]" objectFit="cover" wrapperClass="w-full max-w-full bg-gray-200" />
                 <div className="absolute bottom-2 left-2 flex gap-1.5">
@@ -151,17 +140,6 @@ export default function FeaturedSection({ cars, onCarClick, wishlist, onToggleWi
               <div className="absolute top-3 left-3 z-10 bg-blue-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-md">
                 Featured
               </div>
-              
-              {car.dealType && (
-                <div className={`absolute top-3 left-24 z-10 text-xs font-bold px-3 py-1.5 rounded-full shadow-md ${
-                  car.dealType === 'Cash' ? 'bg-green-500 text-white' :
-                  car.dealType === 'Swap' ? 'bg-orange-500 text-white' :
-                  car.dealType === 'Topup' ? 'bg-purple-500 text-white' :
-                  'bg-gray-500 text-white'
-                }`}>
-                  {car.dealType}
-                </div>
-              )}
               
               <div className="relative w-full sm:w-72 flex-shrink-0">
                 <LazyImage src={car.image || '/images/placeholder.png'} alt={car.name} aspectClass="aspect-[4/3]" objectFit="cover" wrapperClass="w-full h-full bg-gray-200" />
