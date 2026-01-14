@@ -31,7 +31,7 @@ export default function Footer() {
           <div className="lg:col-span-4">
             <div className="mb-6">
               <img 
-                src="/images/Logo.png" 
+                src={`${import.meta.env.BASE_URL}images/Logo.png`} 
                 alt="Zed420Cars" 
                 className="h-10 w-auto brightness-110"
               />

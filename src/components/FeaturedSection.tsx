@@ -74,7 +74,7 @@ export default function FeaturedSection({ cars, onCarClick, wishlist, onToggleWi
               </div>
               
               <div className="relative">
-                <LazyImage src={car.image || '/images/placeholder.png'} alt={car.name} aspectClass="aspect-[4/3]" objectFit="cover" wrapperClass="w-full max-w-full bg-gray-200" />
+                <LazyImage src={car.image || `${import.meta.env.BASE_URL}images/placeholder.png`} alt={car.name} aspectClass="aspect-[4/3]" objectFit="cover" wrapperClass="w-full max-w-full bg-gray-200" />
                 <div className="absolute bottom-2 left-2 flex gap-1.5">
                   {car.year && (
                     <span className="bg-black/70 text-white text-xs font-medium px-2 py-1 rounded flex items-center gap-1">
@@ -142,7 +142,7 @@ export default function FeaturedSection({ cars, onCarClick, wishlist, onToggleWi
               </div>
               
               <div className="relative w-full sm:w-72 flex-shrink-0">
-                <LazyImage src={car.image || '/images/placeholder.png'} alt={car.name} aspectClass="aspect-[4/3]" objectFit="cover" wrapperClass="w-full h-full bg-gray-200" />
+                <LazyImage src={car.image || `${import.meta.env.BASE_URL}images/placeholder.png`} alt={car.name} aspectClass="aspect-[4/3]" objectFit="cover" wrapperClass="w-full h-full bg-gray-200" />
                 <div className="absolute bottom-2 left-2 flex gap-1.5">
                   {car.year && (
                     <span className="bg-black/70 text-white text-xs font-medium px-2 py-1 rounded flex items-center gap-1">

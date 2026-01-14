@@ -43,7 +43,7 @@ export default function Login({ onSwitchToRegister, onClose }: LoginProps) {
           {/* Logo */}
           <div className="flex items-center justify-center mx-auto mb-6">
             <img 
-              src="/images/Logo.png" 
+              src={`${import.meta.env.BASE_URL}images/Logo.png`} 
               alt="Logo" 
               className="h-14 w-auto object-contain"
             />

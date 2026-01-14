@@ -12,7 +12,7 @@ export default function Hero() {
     <div 
       className="relative text-white"
       style={{
-        backgroundImage: 'linear-gradient(to right, rgba(37, 99, 235, 0.10), rgba(29, 78, 216, 0.00)), url(/images/hero-car1.png)',
+        backgroundImage: `linear-gradient(to right, rgba(37, 99, 235, 0.10), rgba(29, 78, 216, 0.00)), url(${import.meta.env.BASE_URL}images/hero-car1.png)`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',

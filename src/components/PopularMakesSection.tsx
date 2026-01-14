@@ -22,19 +22,19 @@ export default function PopularMakesSection({ onMakeClick }: PopularMakesSection
   const scrollTimeoutRef = useRef<number>()
   
   const popularMakes = [
-    { name: 'Toyota', image: '/images/Toyota.png', count: 45 },
-    { name: 'Honda', image: '/images/Honda.png', count: 32 },
-    { name: 'Mercedes-Benz', image: '/images/Benz.png', count: 28 },
-    { name: 'Nissan', image: '/images/Nissan.png', count: 24 },
-    { name: 'Ford', image: '/images/Ford.png', count: 21 },
-    { name: 'Audi', image: '/images/Audi.png', count: 19 },
-    { name: 'Mitsubishi', image: '/images/Mitsu.png', count: 17 },
-    { name: 'BMW', image: '/images/BMW.png', count: 15 },
-    { name: 'Mazda', image: '/images/Mazda.png', count: 13 },
-    { name: 'Volts', image: '/images/Volts.png', count: 11 },
-    { name: 'Hyundai', image: '/images/Hyundai.png', count: 9 },
-    { name: 'Volvo', image: '/images/Volvo.png', count: 7 },
-    { name: 'Isuzu', image: '/images/Isuzu.png', count: 5 }
+    { name: 'Toyota', image: `${import.meta.env.BASE_URL}images/Toyota.png`, count: 45 },
+    { name: 'Honda', image: `${import.meta.env.BASE_URL}images/Honda.png`, count: 32 },
+    { name: 'Mercedes-Benz', image: `${import.meta.env.BASE_URL}images/Benz.png`, count: 28 },
+    { name: 'Nissan', image: `${import.meta.env.BASE_URL}images/Nissan.png`, count: 24 },
+    { name: 'Ford', image: `${import.meta.env.BASE_URL}images/Ford.png`, count: 21 },
+    { name: 'Audi', image: `${import.meta.env.BASE_URL}images/Audi.png`, count: 19 },
+    { name: 'Mitsubishi', image: `${import.meta.env.BASE_URL}images/Mitsu.png`, count: 17 },
+    { name: 'BMW', image: `${import.meta.env.BASE_URL}images/BMW.png`, count: 15 },
+    { name: 'Mazda', image: `${import.meta.env.BASE_URL}images/Mazda.png`, count: 13 },
+    { name: 'Volts', image: `${import.meta.env.BASE_URL}images/Volts.png`, count: 11 },
+    { name: 'Hyundai', image: `${import.meta.env.BASE_URL}images/Hyundai.png`, count: 9 },
+    { name: 'Volvo', image: `${import.meta.env.BASE_URL}images/Volvo.png`, count: 7 },
+    { name: 'Isuzu', image: `${import.meta.env.BASE_URL}images/Isuzu.png`, count: 5 }
   ]
 
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 1024
@@ -139,7 +139,7 @@ export default function PopularMakesSection({ onMakeClick }: PopularMakesSection
                   className="w-full h-full object-contain filter grayscale-0 group-hover:grayscale transition-all duration-200"
                   onError={(e) => {
                     const target = e.target as HTMLImageElement
-                    target.src = '/images/placeholder.png'
+                    target.src = `${import.meta.env.BASE_URL}images/placeholder.png`
                   }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>

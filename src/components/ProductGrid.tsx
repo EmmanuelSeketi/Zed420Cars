@@ -280,7 +280,7 @@ function ProductGrid({
                 
                 {/* Image Container (Lazy + skeleton) */}
                 <div className="relative">
-                  <LazyImage src={car.image || '/images/placeholder.png'} alt={car.name} aspectClass="aspect-[4/3]" objectFit="cover" wrapperClass="w-full max-w-full bg-gray-300" />
+                  <LazyImage src={car.image || `${import.meta.env.BASE_URL}images/placeholder.png`} alt={car.name} aspectClass="aspect-[4/3]" objectFit="cover" wrapperClass="w-full max-w-full bg-gray-300" />
                   {/* Year & Mileage badges */}
                   <div className="absolute bottom-2 left-2 flex gap-1.5">
                     {(car as any).year && (
@@ -376,7 +376,7 @@ function ProductGrid({
                 {/* Image */}
                 <div className="relative w-full sm:w-72 flex-shrink-0">
                   <img
-                    src={car.image || '/images/placeholder.png'}
+                    src={car.image || `${import.meta.env.BASE_URL}images/placeholder.png`}
                     alt={car.name}
                     className="block w-full h-56 sm:h-full bg-gray-300 object-cover object-center"
                   />

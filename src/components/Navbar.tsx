@@ -64,7 +64,7 @@ export default function Navbar({ cartCount, onCartClick, searchQuery, onSearchCh
         <div className="flex justify-between items-center">
           <Link to="/" className="flex items-center">
             <img 
-              src="/images/Logo.png" 
+              src={`${import.meta.env.BASE_URL}images/Logo.png`} 
               alt="Logo" 
               className="h-14 w-auto object-contain"
             />

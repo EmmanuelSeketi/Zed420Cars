@@ -60,7 +60,7 @@ export default function Register({ onSwitchToLogin, onClose }: RegisterProps) {
             {/* Logo */}
             <div className="flex items-center justify-center mx-auto mb-5">
               <img 
-                src="/images/Logo.png" 
+                src={`${import.meta.env.BASE_URL}images/Logo.png`} 
                 alt="Logo" 
                 className="h-14 w-auto object-contain"
               />
