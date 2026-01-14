@@ -1,4 +1,4 @@
-import { ShoppingCart, User, Menu, X, Search } from 'lucide-react'
+import { Heart, User, Menu, X, Search } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 
@@ -13,11 +13,9 @@ interface NavbarProps {
 export default function Navbar({ cartCount, onCartClick, searchQuery, onSearchChange, onLoginClick }: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false)
-  const [isScrollingUp, setIsScrollingUp] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
   const lastScrollYRef = useRef(0)
   const tickingRef = useRef(false)
-  const lastDirectionUpRef = useRef(false)
   const lastIsScrolledRef = useRef(false)
 
   useEffect(() => {
@@ -30,13 +28,7 @@ export default function Navbar({ cartCount, onCartClick, searchQuery, onSearchCh
 
       window.requestAnimationFrame(() => {
         const currentY = window.scrollY || 0
-        const isUp = currentY < lastScrollYRef.current
         const scrolled = currentY > 8
-
-        if (isUp !== lastDirectionUpRef.current) {
-          lastDirectionUpRef.current = isUp
-          setIsScrollingUp(isUp)
-        }
 
         if (scrolled !== lastIsScrolledRef.current) {
           lastIsScrolledRef.current = scrolled
@@ -55,7 +47,7 @@ export default function Navbar({ cartCount, onCartClick, searchQuery, onSearchCh
   return (
     <nav
       className={`sticky top-0 z-50 border-b transition-colors duration-300 ${
-        isScrolled && isScrollingUp
+        isScrolled
           ? 'bg-white/70 backdrop-blur-md shadow-md border-white/20'
           : 'bg-white shadow-lg border-gray-200'
       }`}
@@ -83,24 +75,24 @@ export default function Navbar({ cartCount, onCartClick, searchQuery, onSearchCh
               />
             </div>
             
-            <Link to="/" className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200">Home</Link>
-            <Link to="/about" className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200">About</Link>
-            <Link to="/contact" className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200">Contact</Link>
+            <Link to="/" className="text-gray-700 hover:text-gray-900 font-medium transition-colors duration-200">Home</Link>
+            <Link to="/about" className="text-gray-700 hover:text-gray-900 font-medium transition-colors duration-200">About</Link>
+            <Link to="/contact" className="text-gray-700 hover:text-gray-900 font-medium transition-colors duration-200">Contact</Link>
           </div>
 
           <div className="flex items-center gap-2">
             {/* Mobile Search Button */}
             <button 
               onClick={() => setMobileSearchOpen(!mobileSearchOpen)}
-              className="md:hidden p-2.5 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200"
+              className="md:hidden p-2.5 text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-all duration-200"
             >
               <Search className="w-5 h-5" />
             </button>
             <button
               onClick={onCartClick}
-              className="relative p-2.5 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200"
+              className="relative p-2.5 text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-all duration-200"
             >
-              <ShoppingCart className="w-5 h-5" />
+              <Heart className="w-5 h-5" />
               {cartCount > 0 && (
                 <span className="absolute -top-1 -right-1 bg-blue-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold shadow-md">
                   {cartCount}
@@ -109,13 +101,13 @@ export default function Navbar({ cartCount, onCartClick, searchQuery, onSearchCh
             </button>
             <button 
               onClick={onLoginClick}
-              className="p-2.5 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200"
+              className="p-2.5 text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-all duration-200"
             >
               <User className="w-5 h-5" />
             </button>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2.5 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200"
+              className="md:hidden p-2.5 text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-all duration-200"
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
@@ -150,9 +142,9 @@ export default function Navbar({ cartCount, onCartClick, searchQuery, onSearchCh
         {/* Mobile menu */}
         {mobileMenuOpen && (
           <div className="md:hidden mt-4 pt-4 border-t border-gray-200 space-y-2 animate-in fade-in slide-in-from-top-2">
-            <Link to="/" className="block px-4 py-2.5 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg font-medium transition-colors">Home</Link>
-            <Link to="/about" className="block px-4 py-2.5 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg font-medium transition-colors">About</Link>
-            <Link to="/contact" className="block px-4 py-2.5 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg font-medium transition-colors">Contact</Link>
+            <Link to="/" className="block px-4 py-2.5 text-gray-700 hover:bg-gray-50 hover:text-gray-900 rounded-lg font-medium transition-colors">Home</Link>
+            <Link to="/about" className="block px-4 py-2.5 text-gray-700 hover:bg-gray-50 hover:text-gray-900 rounded-lg font-medium transition-colors">About</Link>
+            <Link to="/contact" className="block px-4 py-2.5 text-gray-700 hover:bg-gray-50 hover:text-gray-900 rounded-lg font-medium transition-colors">Contact</Link>
           </div>
         )}
       </div>

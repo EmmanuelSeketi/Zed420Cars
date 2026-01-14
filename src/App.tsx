@@ -271,8 +271,8 @@ function App() {
   }
 
   return (
-    <Router>
-      <div className="min-h-screen bg-gray-50">
+    <Router basename="/Zed420Cars">
+      <div className="min-h-screen bg-white">
         {/* Page Loader */}
         {isAppLoading && <PageLoader />}
         
@@ -285,125 +285,58 @@ function App() {
           {/* Home Page */}
           <Route path="/" element={
             <>
-              {selectedCar ? (
-                <CarDetails car={selectedCar} allCars={cars} onBack={() => setSelectedCar(null)} />
-              ) : showCart ? (
-                <Cart items={cartItems} onRemove={removeFromCart} onUpdateQuantity={updateQuantity} />
-              ) : (
-                <>
-                  <Hero />
+              <Hero />
 
-                  {/* Popular Makes Section - Separate Container */}
-                  <div className="bg-white border-b border-gray-200">
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-                      <PopularMakesSection 
-                        onMakeClick={(make) => {
-                          // Handle make click - could filter by make or navigate to make-specific page
-                          console.log('Selected make:', make)
-                        }}
-                      />
-                    </div>
+              {/* Popular Makes Section - Separate Container */}
+              <div className="bg-white border-b border-gray-200">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+                  <PopularMakesSection 
+                    onMakeClick={(make) => {
+                      // Handle make click - could filter by make or navigate to make-specific page
+                      console.log('Selected make:', make)
+                    }}
+                  />
+                </div>
+              </div>
+
+              <div id="listings" className="py-4 px-0.5 sm:px-4 lg:px-8">
+                <div className="max-w-7xl mx-auto">
+                  {/* Mobile Filter Button */}
+                  <div className="lg:hidden mb-4 px-4">
+                    <button
+                      onClick={() => setMobileFiltersOpen(true)}
+                      className="w-full flex items-center justify-center gap-3 bg-gradient-to-r from-blue-600 to-blue-500 text-white py-1.5 px-6 rounded-xl font-semibold shadow-lg hover:shadow-xl hover:from-blue-700 hover:to-blue-600 transition-all duration-300 active:scale-[0.98]"
+                    >
+                      <div className="p-1.5 bg-white/20 rounded-lg">
+                        <SlidersHorizontal className="w-5 h-5 text-white" />
+                      </div>
+                      <span>All Filters</span>
+                      <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </button>
                   </div>
 
-                  <div id="listings" className="py-4 px-0.5 sm:px-4 lg:px-8">
-                    <div className="max-w-7xl mx-auto">
-                      {/* Mobile Filter Button */}
-                      <div className="lg:hidden mb-4 px-4">
-                        <button
-                          onClick={() => setMobileFiltersOpen(true)}
-                          className="w-full flex items-center justify-center gap-3 bg-gradient-to-r from-blue-600 to-blue-500 text-white py-1.5 px-6 rounded-xl font-semibold shadow-lg hover:shadow-xl hover:from-blue-700 hover:to-blue-600 transition-all duration-300 active:scale-[0.98]"
-                        >
-                          <div className="p-1.5 bg-white/20 rounded-lg">
-                            <SlidersHorizontal className="w-5 h-5 text-white" />
-                          </div>
-                          <span>All Filters</span>
-                          <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                          </svg>
-                        </button>
-                      </div>
-
-                      {/* Mobile Filter Drawer */}
-                      {mobileFiltersOpen && (
-                        <div className="lg:hidden fixed inset-0 z-[100] overflow-hidden">
-                          <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setMobileFiltersOpen(false)} />
-                          <div className="absolute inset-y-0 right-0 w-full max-w-sm bg-white shadow-xl overflow-y-auto animate-in slide-in-from-right duration-300">
-                            <div className="sticky top-0 bg-white border-b border-gray-200 p-4 flex items-center justify-between z-10">
-                              <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2">
-                                <SlidersHorizontal className="w-5 h-5 text-blue-600" />
-                                All Filters
-                              </h2>
-                              <button
-                                onClick={() => setMobileFiltersOpen(false)}
-                                className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
-                              >
-                                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                                </svg>
-                              </button>
-                            </div>
-                            <div className="p-4">
-                              <Sidebar 
-                                selectedCity={selectedCity}
-                                onCityChange={setSelectedCity}
-                                selectedMake={selectedMake}
-                                onMakeChange={setSelectedMake}
-                                selectedModel={selectedModel}
-                                onModelChange={setSelectedModel}
-                                selectedBodyType={selectedBodyType}
-                                onBodyTypeChange={setSelectedBodyType}
-                                selectedMileage={selectedMileage}
-                                onMileageChange={setSelectedMileage}
-                                selectedYear={selectedYear}
-                                onYearChange={setSelectedYear}
-                                selectedTransmission={selectedTransmission}
-                                onTransmissionChange={setSelectedTransmission}
-                                selectedPrice={selectedPrice}
-                                onPriceChange={setSelectedPrice}
-                                selectedFuelType={selectedFuelType}
-                                onFuelTypeChange={setSelectedFuelType}
-                                selectedDealType={selectedDealType}
-                                onDealTypeChange={setSelectedDealType}
-                                cities={Array.from(new Set(cars.map(c => c.location))).sort()}
-                                makes={Array.from(new Set(cars.map(c => c.make))).sort()}
-                                models={Array.from(new Set(cars.map(c => c.name))).sort()}
-                                bodyTypes={Array.from(new Set(cars.map(c => c.style))).sort()}
-                                years={Array.from(new Set(cars.map(c => String(c.year)))).sort().reverse()}
-                                transmissions={Array.from(new Set(cars.map(c => c.transmission))).sort()}
-                                fuelTypes={Array.from(new Set(cars.map(c => c.fuelType))).sort()}
-                                dealTypes={Array.from(new Set(cars.map(c => c.dealType))).sort()}
-                                onReset={() => {
-                                  setSelectedCity('All')
-                                  setSelectedMake('All')
-                                  setSelectedModel('All')
-                                  setSelectedBodyType('All')
-                                  setSelectedMileage('All')
-                                  setSelectedYear('All')
-                                  setSelectedTransmission('All')
-                                  setSelectedPrice('All')
-                                  setSelectedFuelType('All')
-                                  setSelectedDealType('All')
-                                }}
-                                isCollapsed={false}
-                                onToggleCollapse={() => {}}
-                                isMobileView={true}
-                              />
-                            </div>
-                            <div className="sticky bottom-0 bg-white border-t border-gray-200 p-4">
-                              <button
-                                onClick={() => setMobileFiltersOpen(false)}
-                                className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-medium shadow-md hover:bg-blue-700 transition-colors"
-                              >
-                                Apply
-                              </button>
-                            </div>
-                          </div>
+                  {/* Mobile Filter Drawer */}
+                  {mobileFiltersOpen && (
+                    <div className="lg:hidden fixed inset-0 z-[100] overflow-hidden">
+                      <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setMobileFiltersOpen(false)} />
+                      <div className="absolute inset-y-0 right-0 w-full max-w-sm bg-white shadow-xl overflow-y-auto animate-in slide-in-from-right duration-300">
+                        <div className="sticky top-0 bg-white border-b border-gray-200 p-4 flex items-center justify-between z-10">
+                          <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2">
+                            <SlidersHorizontal className="w-5 h-5 text-blue-600" />
+                            All Filters
+                          </h2>
+                          <button
+                            onClick={() => setMobileFiltersOpen(false)}
+                            className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+                          >
+                            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                          </button>
                         </div>
-                      )}
-
-                      <div className="flex gap-6">
-                        {/* Sidebar (hidden on mobile, shown on desktop) */}
-                        <div className={`hidden lg:block ${sidebarCollapsed ? 'w-14' : 'w-64'} transition-all duration-300`}>
+                        <div className="p-4">
                           <Sidebar 
                             selectedCity={selectedCity}
                             onCityChange={setSelectedCity}
@@ -445,34 +378,93 @@ function App() {
                               setSelectedFuelType('All')
                               setSelectedDealType('All')
                             }}
-                            isCollapsed={sidebarCollapsed}
-                            onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)}
+                            isCollapsed={false}
+                            onToggleCollapse={() => {}}
+                            isMobileView={true}
                           />
                         </div>
-                        {/* Main content */}
-                        <ProductGrid 
-                          cars={cars} 
-                          onAddToCart={addToCart}
-                          onCarClick={handleCarClick}
-                          externalWishlist={wishlist}
-                          onToggleWishlist={toggleWishlist}
-                          selectedModel={selectedModel}
-                          selectedCity={selectedCity}
-                          selectedMake={selectedMake}
-                          selectedTransmission={selectedTransmission}
-                          selectedBodyType={selectedBodyType}
-                          selectedMileage={selectedMileage}
-                          selectedYear={selectedYear}
-                          selectedPrice={selectedPrice}
-                          selectedFuelType={selectedFuelType}
-                          selectedDealType={selectedDealType}
-                          searchQuery={searchQuery}
-                        />
+                        <div className="sticky bottom-0 bg-white border-t border-gray-200 p-4">
+                          <button
+                            onClick={() => setMobileFiltersOpen(false)}
+                            className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-medium shadow-md hover:bg-blue-700 transition-colors"
+                          >
+                            Apply
+                          </button>
+                        </div>
                       </div>
                     </div>
+                  )}
+
+                  <div className="flex gap-6">
+                    {/* Sidebar (hidden on mobile, shown on desktop) */}
+                    <div className={`hidden lg:block ${sidebarCollapsed ? 'w-14' : 'w-64'} transition-all duration-300`}>
+                      <Sidebar 
+                        selectedCity={selectedCity}
+                        onCityChange={setSelectedCity}
+                        selectedMake={selectedMake}
+                        onMakeChange={setSelectedMake}
+                        selectedModel={selectedModel}
+                        onModelChange={setSelectedModel}
+                        selectedBodyType={selectedBodyType}
+                        onBodyTypeChange={setSelectedBodyType}
+                        selectedMileage={selectedMileage}
+                        onMileageChange={setSelectedMileage}
+                        selectedYear={selectedYear}
+                        onYearChange={setSelectedYear}
+                        selectedTransmission={selectedTransmission}
+                        onTransmissionChange={setSelectedTransmission}
+                        selectedPrice={selectedPrice}
+                        onPriceChange={setSelectedPrice}
+                        selectedFuelType={selectedFuelType}
+                        onFuelTypeChange={setSelectedFuelType}
+                        selectedDealType={selectedDealType}
+                        onDealTypeChange={setSelectedDealType}
+                        cities={Array.from(new Set(cars.map(c => c.location))).sort()}
+                        makes={Array.from(new Set(cars.map(c => c.make))).sort()}
+                        models={Array.from(new Set(cars.map(c => c.name))).sort()}
+                        bodyTypes={Array.from(new Set(cars.map(c => c.style))).sort()}
+                        years={Array.from(new Set(cars.map(c => String(c.year)))).sort().reverse()}
+                        transmissions={Array.from(new Set(cars.map(c => c.transmission))).sort()}
+                        fuelTypes={Array.from(new Set(cars.map(c => c.fuelType))).sort()}
+                        dealTypes={Array.from(new Set(cars.map(c => c.dealType))).sort()}
+                        onReset={() => {
+                          setSelectedCity('All')
+                          setSelectedMake('All')
+                          setSelectedModel('All')
+                          setSelectedBodyType('All')
+                          setSelectedMileage('All')
+                          setSelectedYear('All')
+                          setSelectedTransmission('All')
+                          setSelectedPrice('All')
+                          setSelectedFuelType('All')
+                          setSelectedDealType('All')
+                        }}
+                        isCollapsed={sidebarCollapsed}
+                        onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)}
+                      />
+                    </div>
+                    {/* Main content */}
+                    <ProductGrid 
+                      cars={cars} 
+                      onAddToCart={addToCart}
+                      onCarClick={handleCarClick}
+                      externalWishlist={wishlist}
+                      onToggleWishlist={toggleWishlist}
+                      selectedModel={selectedModel}
+                      selectedCity={selectedCity}
+                      selectedMake={selectedMake}
+                      selectedTransmission={selectedTransmission}
+                      selectedBodyType={selectedBodyType}
+                      selectedMileage={selectedMileage}
+                      selectedYear={selectedYear}
+                      selectedPrice={selectedPrice}
+                      selectedFuelType={selectedFuelType}
+                      selectedDealType={selectedDealType}
+                      searchQuery={searchQuery}
+                    />
                   </div>
-                </>
-              )}
+                </div>
+              </div>
             </>
           } />
           

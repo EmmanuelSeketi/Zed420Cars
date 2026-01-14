@@ -53,12 +53,12 @@ export default function NewListingsSection({ cars, onCarClick, wishlist, onToggl
       </div>
 
       {viewMode === 'grid' ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 lg:gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-2 lg:gap-3">
           {newListings.map(car => (
             <div 
               key={car.id} 
               onClick={() => onCarClick(car)}
-              className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col w-full border border-gray-100 hover:border-blue-300 relative group cursor-pointer mb-4 sm:mb-0"
+              className="bg-white rounded-md overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col w-full border border-gray-100 hover:border-blue-300 relative group cursor-pointer mb-4 sm:mb-0"
             >
               <button
                 onClick={(e) => { e.stopPropagation(); onToggleWishlist(car.id); }}
@@ -126,7 +126,7 @@ export default function NewListingsSection({ cars, onCarClick, wishlist, onToggl
             <div 
               key={car.id} 
               onClick={() => onCarClick(car)}
-              className="bg-white rounded-lg shadow-md hover:shadow-2xl overflow-hidden transition-all duration-300 flex flex-col sm:flex-row items-stretch w-full border border-gray-100 hover:border-blue-300 relative group cursor-pointer"
+              className="bg-white rounded-md shadow-md hover:shadow-2xl overflow-hidden transition-all duration-300 flex flex-col sm:flex-row items-stretch w-full border border-gray-100 hover:border-blue-300 relative group cursor-pointer"
             >
               <button
                 onClick={(e) => { e.stopPropagation(); onToggleWishlist(car.id); }}
