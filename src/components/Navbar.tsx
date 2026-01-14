@@ -1,5 +1,5 @@
 import { ShoppingCart, User, Menu, X, Search } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 interface NavbarProps {
@@ -13,9 +13,53 @@ interface NavbarProps {
 export default function Navbar({ cartCount, onCartClick, searchQuery, onSearchChange, onLoginClick }: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false)
+  const [isScrollingUp, setIsScrollingUp] = useState(false)
+  const [isScrolled, setIsScrolled] = useState(false)
+  const lastScrollYRef = useRef(0)
+  const tickingRef = useRef(false)
+  const lastDirectionUpRef = useRef(false)
+  const lastIsScrolledRef = useRef(false)
+
+  useEffect(() => {
+    lastScrollYRef.current = window.scrollY || 0
+    lastIsScrolledRef.current = (window.scrollY || 0) > 8
+
+    const onScroll = () => {
+      if (tickingRef.current) return
+      tickingRef.current = true
+
+      window.requestAnimationFrame(() => {
+        const currentY = window.scrollY || 0
+        const isUp = currentY < lastScrollYRef.current
+        const scrolled = currentY > 8
+
+        if (isUp !== lastDirectionUpRef.current) {
+          lastDirectionUpRef.current = isUp
+          setIsScrollingUp(isUp)
+        }
+
+        if (scrolled !== lastIsScrolledRef.current) {
+          lastIsScrolledRef.current = scrolled
+          setIsScrolled(scrolled)
+        }
+
+        lastScrollYRef.current = currentY
+        tickingRef.current = false
+      })
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   return (
-    <nav className="bg-white shadow-lg border-b border-gray-200 sticky top-0 z-50">
+    <nav
+      className={`sticky top-0 z-50 border-b transition-colors duration-300 ${
+        isScrolled && isScrollingUp
+          ? 'bg-white/70 backdrop-blur-md shadow-md border-white/20'
+          : 'bg-white shadow-lg border-gray-200'
+      }`}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <div className="flex justify-between items-center">
           <Link to="/" className="flex items-center">

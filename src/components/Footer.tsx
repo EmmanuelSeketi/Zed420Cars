@@ -1,114 +1,136 @@
+import React from 'react';
+import { Mail, Phone, MapPin, Facebook, Twitter, Instagram, ArrowRight, ShieldCheck, CreditCard, Headphones } from 'lucide-react';
+
 export default function Footer() {
   return (
-    <footer className="bg-gray-950 text-gray-200 border-t border-gray-800">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Main Footer Content */}
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 py-10">
-          {/* Company Info */}
-          <div className="lg:col-span-2 border border-gray-800 bg-gray-900/40 p-6">
-            <div className="flex items-center mb-5">
-              <img 
-                src="/images/Logo.png" 
-                alt="Zed420Cars" 
-                className="h-12 w-auto object-contain scale-150"
-              />
-            </div>
-            <p className="text-gray-300 text-sm leading-relaxed max-w-md">
-              Zambia's premier automotive marketplace connecting buyers and sellers of quality vehicles across the country. 
-              Trust, transparency, and excellence in every transaction.
-            </p>
-            <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-2">
-              <div className="flex items-center gap-3 text-xs font-medium border border-gray-800 bg-gray-950/40 px-3 py-2">
-                <div className="w-2 h-2 bg-blue-500"></div>
-                <span className="tracking-wide">Verified Listings</span>
-              </div>
-              <div className="flex items-center gap-3 text-xs font-medium border border-gray-800 bg-gray-950/40 px-3 py-2">
-                <div className="w-2 h-2 bg-green-500"></div>
-                <span className="tracking-wide">Secure Transactions</span>
-              </div>
-              <div className="flex items-center gap-3 text-xs font-medium border border-gray-800 bg-gray-950/40 px-3 py-2">
-                <div className="w-2 h-2 bg-purple-500"></div>
-                <span className="tracking-wide">24/7 Support</span>
-              </div>
-            </div>
+    <footer className="bg-slate-950 text-slate-300">
+      {/* Newsletter Section */}
+      <div className="border-b border-slate-800/60">
+        <div className="max-w-7xl mx-auto px-4 py-12 flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="max-w-md">
+            <h3 className="text-xl font-bold text-white mb-2">Join the inner circle</h3>
+            <p className="text-sm text-slate-400">Get exclusive offers and the latest automotive news in Zambia delivered to your inbox.</p>
           </div>
-
-          {/* Quick Links */}
-          <div className="border border-gray-800 bg-gray-900/40 p-6">
-            <h3 className="text-white font-semibold mb-5 text-xs tracking-[0.18em] uppercase">Quick Links</h3>
-            <ul className="space-y-2">
-              <li><a href="#" className="text-gray-300 hover:text-white transition-colors text-sm">Browse Cars</a></li>
-              <li><a href="#" className="text-gray-300 hover:text-white transition-colors text-sm">Sell Your Car</a></li>
-              <li><a href="#" className="text-gray-300 hover:text-white transition-colors text-sm">Financing Options</a></li>
-              <li><a href="#" className="text-gray-300 hover:text-white transition-colors text-sm">Insurance Partners</a></li>
-              <li><a href="#" className="text-gray-300 hover:text-white transition-colors text-sm">Car Inspection</a></li>
-            </ul>
-          </div>
-
-          {/* Contact Info */}
-          <div className="border border-gray-800 bg-gray-900/40 p-6">
-            <h3 className="text-white font-semibold mb-5 text-xs tracking-[0.18em] uppercase">Contact</h3>
-            <div className="space-y-3">
-              <div className="flex items-start gap-3">
-                <div className="w-8 h-8 border border-gray-700 bg-gray-950/60 flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <div className="w-2 h-2 bg-blue-500"></div>
-                </div>
-                <div>
-                  <p className="text-sm font-semibold text-white">Head Office</p>
-                  <p className="text-gray-300 text-sm">Lusaka City Center, Zambia</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 border border-gray-700 bg-gray-950/60 flex items-center justify-center flex-shrink-0">
-                  <div className="w-2 h-2 bg-green-500"></div>
-                </div>
-                <a href="tel:+260977777777" className="text-gray-300 hover:text-white transition-colors text-sm">+260 977 777 777</a>
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 border border-gray-700 bg-gray-950/60 flex items-center justify-center flex-shrink-0">
-                  <div className="w-2 h-2 bg-purple-500"></div>
-                </div>
-                <a href="mailto:info@zed420cars.zm" className="text-gray-300 hover:text-white transition-colors text-sm">info@zed420cars.zm</a>
-              </div>
-            </div>
-
-            {/* Social Media */}
-            <div className="mt-6">
-              <h4 className="text-white font-semibold mb-3 text-xs tracking-[0.18em] uppercase">Social</h4>
-              <div className="flex gap-2">
-                <a href="#" className="w-9 h-9 border border-gray-700 bg-gray-950/60 flex items-center justify-center hover:bg-blue-600 hover:border-blue-500 transition-colors">
-                  <span className="text-xs text-white font-semibold">f</span>
-                </a>
-                <a href="#" className="w-9 h-9 border border-gray-700 bg-gray-950/60 flex items-center justify-center hover:bg-blue-400 hover:border-blue-300 transition-colors">
-                  <span className="text-xs text-white font-semibold">t</span>
-                </a>
-                <a href="#" className="w-9 h-9 border border-gray-700 bg-gray-950/60 flex items-center justify-center hover:bg-pink-600 hover:border-pink-400 transition-colors">
-                  <span className="text-xs text-white font-semibold">i</span>
-                </a>
-                <a href="#" className="w-9 h-9 border border-gray-700 bg-gray-950/60 flex items-center justify-center hover:bg-green-600 hover:border-green-500 transition-colors">
-                  <span className="text-xs text-white font-semibold">w</span>
-                </a>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-        {/* Bottom Footer */}
-        <div className="border-t border-gray-800 py-6">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-            <div className="text-xs tracking-[0.14em] uppercase text-gray-400">
-              &copy; 2024 Zed420Cars. All rights reserved. Made with love in Zambia
-            </div>
-            <div className="flex flex-wrap gap-0 text-sm border border-gray-800 bg-gray-900/30">
-              <a href="#" className="px-4 py-2 text-gray-300 hover:text-white transition-colors border-r border-gray-800">Privacy Policy</a>
-              <a href="#" className="px-4 py-2 text-gray-300 hover:text-white transition-colors border-r border-gray-800">Terms of Service</a>
-              <a href="#" className="px-4 py-2 text-gray-300 hover:text-white transition-colors">Cookie Policy</a>
-            </div>
+          <div className="w-full md:w-auto flex gap-2">
+            <input 
+              type="email" 
+              placeholder="Email address" 
+              className="bg-slate-900 border border-slate-800 px-4 py-2.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all w-full md:w-72" 
+            />
+            <button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-lg font-medium transition-all flex items-center gap-2">
+              Join <ArrowRight size={16} />
+            </button>
           </div>
         </div>
       </div>
 
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8">
+          
+          {/* Brand Identity */}
+          <div className="lg:col-span-4">
+            <div className="mb-6">
+              <img 
+                src="/images/Logo.png" 
+                alt="Zed420Cars" 
+                className="h-10 w-auto brightness-110"
+              />
+            </div>
+            <p className="text-slate-400 text-sm leading-relaxed mb-8 max-w-sm">
+              Zambia's premier automotive marketplace. We facilitate seamless connections between buyers and sellers with industry-leading transparency.
+            </p>
+            <div className="flex gap-4">
+              <SocialLink icon={<Facebook size={18} />} href="#" />
+              <SocialLink icon={<Twitter size={18} />} href="#" />
+              <SocialLink icon={<Instagram size={18} />} href="#" />
+            </div>
+          </div>
+
+          {/* Navigation Links */}
+          <div className="lg:col-span-2">
+            <h4 className="text-white font-bold text-sm uppercase tracking-wider mb-6">Marketplace</h4>
+            <ul className="space-y-4">
+              <FooterLink href="#">Browse Cars</FooterLink>
+              <FooterLink href="#">Sell Your Car</FooterLink>
+              <FooterLink href="#">New Arrivals</FooterLink>
+              <FooterLink href="#">Car Inspection</FooterLink>
+            </ul>
+          </div>
+
+          <div className="lg:col-span-2">
+            <h4 className="text-white font-bold text-sm uppercase tracking-wider mb-6">Services</h4>
+            <ul className="space-y-4">
+              <FooterLink href="#">Financing</FooterLink>
+              <FooterLink href="#">Insurance</FooterLink>
+              <FooterLink href="#">Price Guide</FooterLink>
+              <FooterLink href="#">Help Center</FooterLink>
+            </ul>
+          </div>
+
+          {/* Contact Details */}
+          <div className="lg:col-span-4">
+            <h4 className="text-white font-bold text-sm uppercase tracking-wider mb-6">Get in Touch</h4>
+            <div className="space-y-4">
+              <ContactItem icon={<MapPin size={18} className="text-blue-500" />} text="Lusaka City Center, Zambia" />
+              <ContactItem icon={<Phone size={18} className="text-blue-500" />} text="+260 977 777 777" isLink href="tel:+260977777777" />
+              <ContactItem icon={<Mail size={18} className="text-blue-500" />} text="info@zed420cars.zm" isLink href="mailto:info@zed420cars.zm" />
+            </div>
+          </div>
+        </div>
+
+        {/* Value Props Bar */}
+        <div className="mt-16 grid grid-cols-1 sm:grid-cols-3 gap-4 border-y border-slate-800/50 py-8">
+          <ValueProp icon={<ShieldCheck className="text-emerald-500" />} title="Verified Listings" />
+          <ValueProp icon={<CreditCard className="text-blue-500" />} title="Secure Payments" />
+          <ValueProp icon={<Headphones className="text-purple-500" />} title="Expert Support" />
+        </div>
+
+        {/* Bottom Bar */}
+        <div className="mt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-500 font-medium uppercase tracking-widest">
+          <p>© 2026 Zed420Cars. Built for the Zambian Road.</p>
+          <div className="flex gap-6">
+            <a href="#" className="hover:text-white transition-colors">Privacy</a>
+            <a href="#" className="hover:text-white transition-colors">Terms</a>
+            <a href="#" className="hover:text-white transition-colors">Cookies</a>
+          </div>
+        </div>
+      </div>
     </footer>
-  )
+  );
 }
+
+// Helper Components for Cleanliness
+const FooterLink = ({ href, children }: { href: string; children: React.ReactNode }) => (
+  <li>
+    <a href={href} className="text-slate-400 hover:text-white transition-all duration-200 text-sm flex items-center group">
+      <span className="h-[1px] w-0 bg-blue-500 mr-0 transition-all duration-200 group-hover:w-3 group-hover:mr-2"></span>
+      {children}
+    </a>
+  </li>
+);
+
+const SocialLink = ({ icon, href }: { icon: React.ReactNode; href: string }) => (
+  <a href={href} className="w-10 h-10 rounded-full border border-slate-800 flex items-center justify-center hover:bg-blue-600 hover:border-blue-600 hover:text-white transition-all duration-300">
+    {icon}
+  </a>
+);
+
+const ContactItem = ({ icon, text, isLink, href }: any) => (
+  <div className="flex items-center gap-4">
+    <div className="w-10 h-10 rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-center shrink-0">
+      {icon}
+    </div>
+    {isLink ? (
+      <a href={href} className="text-sm text-slate-400 hover:text-white transition-colors">{text}</a>
+    ) : (
+      <span className="text-sm text-slate-400">{text}</span>
+    )}
+  </div>
+);
+
+const ValueProp = ({ icon, title }: { icon: React.ReactNode; title: string }) => (
+  <div className="flex items-center justify-center gap-3">
+    {icon}
+    <span className="text-sm font-semibold text-slate-200">{title}</span>
+  </div>
+);
