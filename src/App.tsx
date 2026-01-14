@@ -6,14 +6,12 @@ import Hero from './components/Hero.tsx'
 import ProductGrid from './components/ProductGrid.tsx'
 import Sidebar from './components/Sidebar.tsx'
 import Footer from './components/Footer.tsx'
-import Cart from './components/Cart.tsx'
 import PageLoader from './components/PageLoader.tsx'
 import PopularMakesSection from './components/PopularMakesSection.tsx'
 import Login from './components/Login.tsx'
 import Register from './components/Register.tsx'
-import CarDetails from './components/CarDetails.tsx'
-import Contact from './components/Contact.tsx'
 import About from './components/About.tsx'
+import Contact from './components/Contact.tsx'
 import './index.css'
 
 function App() {
@@ -35,7 +33,6 @@ function App() {
   const [searchQuery, setSearchQuery] = useState('')
   const [showLogin, setShowLogin] = useState(false)
   const [showRegister, setShowRegister] = useState(false)
-  const [selectedCar, setSelectedCar] = useState<any>(null)
   const [wishlist, setWishlist] = useState<Set<number>>(new Set())
 
   // Simulate initial app loading
@@ -240,16 +237,6 @@ function App() {
     setCartItems(cartItems.filter(item => item.id !== carId))
   }
 
-  const updateQuantity = (carId: number, quantity: number) => {
-    if (quantity <= 0) {
-      removeFromCart(carId)
-    } else {
-      setCartItems(cartItems.map(item =>
-        item.id === carId ? { ...item, quantity } : item
-      ))
-    }
-  }
-
   const toggleWishlist = (carId: number) => {
     const newWishlist = new Set(wishlist)
     if (newWishlist.has(carId)) {
@@ -261,7 +248,7 @@ function App() {
   }
 
   const handleCarClick = (car: any) => {
-    setSelectedCar(car)
+    // Can be used for navigation or other actions
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
