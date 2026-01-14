@@ -233,10 +233,6 @@ function App() {
     }
   }
 
-  const removeFromCart = (carId: number) => {
-    setCartItems(cartItems.filter(item => item.id !== carId))
-  }
-
   const toggleWishlist = (carId: number) => {
     const newWishlist = new Set(wishlist)
     if (newWishlist.has(carId)) {
@@ -247,7 +243,7 @@ function App() {
     setWishlist(newWishlist)
   }
 
-  const handleCarClick = (car: any) => {
+  const handleCarClick = () => {
     // Can be used for navigation or other actions
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
